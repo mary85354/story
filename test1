@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>情慾物語：選擇之夜</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply font-body text-brown-dark bg-cream-light antialiased;
+            }
+        }
+        @layer utilities {
+            /* Custom Scrollbar for a premium look */
+            /* Works in modern browsers like Chrome, Edge, Firefox */
+            ::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+            }
+            ::-webkit-scrollbar-track {
+                background: theme('colors.cream.light');
+                border-radius: 10px;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: theme('colors.coffee.light');
+                border-radius: 10px;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+                background: theme('colors.coffee.darker');
+            }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cream-light': 'hsl(30, 20%, 95%)',      // Soft background
+                        'cream-lighter': 'hsl(30, 25%, 98%)',    // Main container background
+                        'brown-dark': 'hsl(20, 30%, 15%)',       // Primary text color
+                        'coffee-light': 'hsl(30, 25%, 85%)',     // Button background
+                        'coffee-darker': 'hsl(30, 30%, 75%)',    // Button hover background
+                        'accent-dusty-rose': 'hsl(340, 15%, 70%)', // Subtle accent
+                    },
+                    fontFamily: {
+                        body: ['"Noto Sans TC"', 'sans-serif'], // For story text
+                        display: ['Outfit', 'sans-serif'],      // For choices/headers
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 sm:p-8 overflow-y-auto">
+
+    <div class="max-w-4xl w-full mx-auto p-6 sm:p-8 md:p-10 bg-cream-lighter rounded-3xl shadow-2xl space-y-8 animate-fade-in-up">
+        <!-- Story Text Area -->
+        <div id="story-text" class="bg-white/80 backdrop-blur-sm p-6 sm:p-8 md:p-10 rounded-2xl shadow-xl transition-all duration-500 ease-out text-left text-lg sm:text-xl md:text-2xl leading-relaxed text-brown-dark border border-cream-light/50">
+            <!-- Story content will be loaded here by JavaScript -->
+        </div>
+
+        <!-- Choice Buttons Area -->
+        <div id="choices-container" class="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-4 sm:gap-6 mt-8">
+            <!-- Choice buttons will be loaded here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        const storyData = [
+            {
+                "id": "start",
+                "paragraph": "22樓的頂樓景觀房，落地窗外城市燈火如銀河傾瀉。Yoko扶著醉醺醺的Faye踏進玄關，鞋子還沒脫，氣壓就已經變得異常低。這裡靜得詭異，安靜得不像有人居住，卻又處處透露出主人的品味——極簡、昂貴，但氛圍卻冷清的像一間水泥牢籠。Yoko問沙發在哪，Faye半睜著眼，伸手指了指那張米白色的大型L型沙發。Yoko幫對方放好，正想起身告辭，手腕卻又一次被抓住。「Yoko……」Faye喉音微啞，醉態依舊，卻不像剛剛那樣模糊不清，語氣反而比任何時候都還清楚，「妳的銀行戶頭裡，剩沒多少錢了吧？」Yoko瞬間像被雷擊中，臉色僵住：「妳、妳怎麼知道……？」Faye輕聲笑了笑，說這是猜的，從Yoko折返那刻開始，但她的眼神告訴Faye猜對了。這樣的語氣聽來不是高傲，反而帶著一種致命的誘惑。「……所以呢？」Yoko防備地問。「幫我個忙吧，只要今晚讓我放鬆一下……我會付妳五萬，現金。」「……什麼忙？」Yoko咽了口口水，臉頰發燙。「Yoko……」Faye的聲音輕緩，卻異常清晰，「妳剛剛在停車場說什麼話來著……？」她的指尖冰冷，卻像帶著火一樣貼在Yoko的皮膚上。「我又不是狗，哪是這樣給你們有錢人使喚的。」那句話，在車庫的回聲中清晰得像是剛剛才說出口。此刻，被Faye一字一句念出來，如同尖針倒刺般紮進她的自尊。Yoko愣住了，像是被什麼擊中，嘴唇顫了顫，卻一句話也說不出來。她的沉默，就是最赤裸的承認。Faye讓Yoko走到電視櫃下方的抽屜，找到一個黑色絲絨小盒子。「妳打開來看看。」Yoko遲疑地打開，盒子裡竟是一條細緻的黑色皮質項圈，附著一條很長的纖細銀製鎖鍊牽繩，像是某種……情趣用品。「這是什麼意思……？」她聲音發虛。「只是個小遊戲。」Faye靠近她，語氣溫柔到近乎迷惑，「戴上它，爬到我腳邊。讓我今晚，擁有一隻屬於我的小狗。我不會碰妳，不會強迫妳。只是……想看看妳服從的樣子。」",
+                "choices": [
+                    {"text": "yoko 戴上項圈", "next": "path_collar_accept"},
+                    {"text": "yoko 拒絕交易", "next": "path_collar_refuse"},
+                    {"text": "yoko 質問faye", "next": "path_collar_question"}
+                ]
+            },
+            {
+                "id": "path_collar_accept",
+                "paragraph": "「……這是羞辱嗎？」Yoko的聲音變得乾澀。「不，這是交易。」Faye勾起嘴角，「妳缺錢，我給妳。妳給我想要的樣子，我給妳明天的喘息空間。」Yoko不語。她望著那條閃著柔光的項圈，指尖顫抖。房租、爸爸的醫藥費、那該死的學貸——現實一層一層地壓在她背上，把她推向無路可退的邊緣。「我要戴多久?」「戴到我滿意為止。」Faye輕笑。Yoko的喉嚨像被什麼堵住，呼吸急促。在她還來不及思考這是否是錯誤之前，她的手已經慢慢伸向那條項圈。Yoko的手指微微發顫，她深吸一口氣，緩慢地、像是要吞下一口屈辱，終於將那條項圈繫在自己脖子上。皮革緊貼肌膚的那一瞬間，她整個人都像被按住了呼吸鍵，脖子傳來的壓迫感不是痛，而是比痛更深的感覺——屈服。「很好。」Faye聲音低低的，帶著欣賞，又帶著掌控一切的愉悅，「不愧是我挑中的女孩。」Yoko垂下頭，肩膀僵直，整個人像是站在懸崖邊的紙人，隨時會散架。她不想照鏡子，她不想知道自己現在的樣子有多卑微。",
+                "choices": [
+                    {"text": "faye 牽引yoko", "next": "path_bathroom_intro"}
+                ]
+            },
+            {
+                "id": "path_collar_refuse",
+                "paragraph": "Yoko用力甩開Faye的手，顫抖地說：「對不起，我不能這麼做。這不是我賺錢的方式，也不應該是！」她猛地從沙發邊站起來，背對著Faye，雙手緊握成拳，指甲幾乎要嵌進肉裡。Faye只是靜靜地看著她的背影，沒有說話。空氣中只剩下Yoko急促的呼吸聲。過了一會兒，Faye輕輕嘆了口氣，語氣帶著一絲失望，卻又異常平靜：「既然如此，妳走吧。錢我還是會給妳，就當作妳把我送回家的費用。」Yoko轉過身，眼中帶著一絲驚訝與困惑。她以為Faye會生氣、會威脅，卻沒想到是這樣的結果。她看到Faye從茶几上拿起一個信封，抽出厚厚一疊鈔票遞給她。Yoko接過錢，心頭的壓力和羞辱感複雜交織。她沒有再多說什麼，轉身快步離開了Faye的公寓。走出大門的那一刻，她感覺到一陣冰冷的夜風吹來，卻無法吹散她心頭的沉重。她的父親，她的學貸……這些現實的重擔並沒有因為她的拒絕而消失。她抬頭看向夜空，城市的燈火依舊璀璨，而她，卻像一顆被拋棄的星辰，孤單又迷茫。",
+                "choices": [
+                    {"text": "故事結束", "next": "end_refuse"}
+                ]
+            },
+            {
+                "id": "path_collar_question",
+                "paragraph": "Yoko咬緊下唇，眼神中帶著一絲不甘與倔強。「妳說不會碰我，不會強迫我，那妳想要看到什麼？妳以為這樣就能讓我服從？」她的語氣帶著挑戰，卻又藏著一絲不易察覺的顫抖。Faye聞言，輕輕笑了起來，那笑聲帶著一種玩味與掌控。「當然不只這些。」Faye伸出指尖，輕輕劃過Yoko的臉頰，像是在觸摸一件珍稀的藝術品。「我想要看妳的掙扎，妳的妥協，還有……妳在慾望與尊嚴之間，最終會如何選擇。」她收回手，眼神變得深邃。「妳以為我只是要妳戴上項圈嗎？那只是個開始，小狗。」Faye的眼神彷彿能看透Yoko的靈魂，讓Yoko的心跳加速。Faye站起身，朝Yoko緩緩走來，每一步都帶著無形的壓迫感。「妳的身體，妳的反應，都比妳的嘴巴誠實多了。現在，妳還覺得自己能反抗我嗎？」Faye的氣息逐漸靠近，Yoko感到自己像是被困在蛛網中的獵物，越是掙扎，就越是被纏繞得緊。她的身體僵硬，卻又無法後退一步。",
+                "choices": [
+                    {"text": "yoko 保持不動", "next": "path_collar_question_still"},
+                    {"text": "yoko 輕微後退", "next": "path_collar_question_retreat"},
+                    {"text": "yoko 突然貼近", "next": "path_collar_question_approach"}
+                ]
+            },
+            {
+                "id": "path_collar_question_still",
+                "paragraph": "Yoko僵硬地站在原地，連呼吸都屏住了。她感覺Faye的氣息近在咫尺，那股混合著酒香與香水味的誘惑，讓她身體深處隱隱發熱。Faye看著她，眼神中閃過一絲滿意。「看來，妳並沒有妳想像中那麼排斥。」Faye的指尖再次輕撫上Yoko的脖頸，卻不是項圈的位置，而是那片敏感的肌膚。那觸感輕柔卻帶著不容置疑的掌控，讓Yoko渾身一顫。Faye輕笑一聲，隨後收回了手。「既然妳的身體已經給了我答案，那麼，我們就從這裡開始。」Faye再次指向項圈，眼神中帶著玩味的期待。Yoko此刻的思緒已然混亂，身體的反應讓她無法再為自己辯駁。她知道自己正在一步步地淪陷，卻又像被施了魔法般，無法掙脫。她緩緩地伸出手，拿起了那條冰冷的皮質項圈，指尖輕輕摩挲著它的表面，像是撫摸著自己即將被束縛的命運。她的眼神望向Faye，那其中不再只有防備，還多了一絲，連她自己都未曾察覺的……臣服。",
+                "choices": [
+                    {"text": "yoko 繫上項圈", "next": "path_collar_accept"}
+                ]
+            },
+            {
+                "id": "path_collar_question_retreat",
+                "paragraph": "Yoko不自覺地往後退了一步，腳步有些慌亂。她的臉色蒼白，眼中滿是警惕和不安。「我……我只是不習慣被人這樣對待。」她的聲音帶著一絲顫抖，試圖為自己的退縮找個藉口。Faye的笑容收斂了一些，眼神中閃過一絲銳利。「不習慣？」她重複著Yoko的話，語氣中帶著明顯的不悅。「妳以為，我可以隨意用錢買到任何想要的東西，包括妳的反抗？」Faye向前一步，Yoko就後退一步，直到她的背脊抵住了冰冷的牆壁。Faye伸出手，輕輕拍了拍Yoko的臉頰，那觸感冰冷而又帶著懲罰意味。「妳的身體很誠實，Yoko。別再自欺欺人了。」Faye的聲音低沉而危險，讓Yoko感到一股前所未有的壓迫感。Yoko的心臟狂跳，她感到自己的尊嚴被Faye毫不留情地踩在腳下。在這種絕對的掌控下，她感到前所未有的無助與屈辱。Faye看著她，眼神中帶著一絲失望，隨後收回了手，轉身走向沙發，沒有再看Yoko一眼。「既然妳不喜歡這個遊戲，那我也不強求。」她拿起茶几上的錢，遞給Yoko：「這是妳把我送回家的費用，妳可以走了。」Yoko看著那疊錢，眼神複雜。她想要反駁，想要吼叫，但最終卻一句話也說不出來。她拿起錢，轉身跑出了Faye的公寓，頭也不回。她的心在滴血，尊嚴盡失，而她所期望的，也似乎隨著這場失敗的「交易」煙消雲散。",
+                "choices": [
+                    {"text": "故事結束", "next": "end_retreat"}
+                ]
+            },
+            {
+                "id": "path_collar_question_approach",
+                "paragraph": "Yoko不退反進，在Faye靠近的瞬間，她突然向前，幾乎貼上了Faye的身體。她的眼神不再只有防備，還帶著一種挑釁與自毀的決絕。「妳以為妳贏了嗎？」Yoko的聲音低沉，卻出乎意料地清晰，「妳以為我是被妳的錢誘惑？還是被妳的權勢壓垮？」她抬起頭，直視Faye的眼睛，兩人的呼吸交織在一起。Faye的笑容凝固在臉上，眼神中閃過一絲詫異，似乎沒料到Yoko會有如此大膽的反應。Yoko的指尖輕輕觸碰Faye的衣襟，那觸感冰涼，卻像點燃了某種火花。「我要證明給妳看，我不是任何人的狗。」她的語氣中帶著一絲瘋狂，卻又充滿了致命的吸引力。「現在，妳還想要我戴上那個項圈嗎？還是說……妳其實，是想被我馴服？」Yoko的身體緊繃，卻散發出一種前所未有的力量，讓Faye感到一絲錯愕與心跳加速。",
+                "choices": [
+                    {"text": "faye 保持沉默", "next": "path_faye_silent"},
+                    {"text": "faye 反擊yoko", "next": "path_faye_counter"}
+                ]
+            },
+            {
+                "id": "path_faye_silent",
+                "paragraph": "Faye的目光深邃，她緩緩收斂了笑容，眼中閃爍著複雜的光芒。她沒有說話，只是凝視著Yoko，那眼神仿佛要穿透Yoko的靈魂。空氣中的張力達到了頂點，一觸即發。Yoko感到Faye的氣息依然在她的周圍縈繞，但那股壓迫感卻變成了另一種無形的磁力，將她牢牢吸附。她不知道Faye下一步會做什麼，這種未知讓她心臟狂跳，卻又充滿了禁忌的刺激。Faye抬起手，輕輕觸碰Yoko的髮絲，指尖流連在她耳畔，極盡溫柔，卻又像是在宣示某種主權。「妳很有趣，Yoko。」Faye低聲說，聲音沙啞得如同美酒，「比我想像中更有趣。今晚，遊戲才剛剛開始。」她的眼神中，燃燒著危險的火光。",
+                "choices": [
+                    {"text": "yoko 等待faye的下一步", "next": "path_faye_next_step"}
+                ]
+            },
+            {
+                "id": "path_faye_counter",
+                "paragraph": "Faye的唇角勾起一抹危險的弧度，她的手腕突然翻轉，輕柔卻不容抗拒地扣住了Yoko的手腕。她的眼神深邃而玩味，像是看穿了Yoko所有的偽裝和挑釁。「想馴服我？」Faye輕笑，語氣充滿了自信與不屑，「小狗，妳是不是太高估自己了？」她稍稍用力，將Yoko拉得更近，兩人的身體幾乎完全貼合。Yoko感到一股電流竄過全身，Faye的氣息將她完全包圍。Faye的指尖滑過Yoko的臉頰，輕撫到她的下巴，隨後抬起她的頭，讓Yoko不得不直視她的眼睛。「別忘了，今晚是誰把誰帶回家的。誰在誰的公寓裡，而誰又更需要這筆錢。」Faye的聲音低沉而充滿磁性，每一個字都像在Yoko的心上敲擊。Yoko的身體不自覺地顫抖起來，她知道自己此刻的挑釁，已經點燃了Faye心中更深層的慾望與掌控欲。她感到自己像是一隻被捕獲的野獸，越是掙扎，就越是深陷其中。",
+                "choices": [
+                    {"text": "yoko 嘗試掙脫", "next": "path_struggle"},
+                    {"text": "yoko 停止反抗", "next": "path_surrender"}
+                ]
+            },
+            {
+                "id": "path_bathroom_intro",
+                "paragraph": "Faye牽引著戴上項圈的Yoko，輕輕拉動鎖鍊。「浴室在哪？」她輕聲問。Yoko的呼吸一窒，她知道Faye的意圖。「走這邊。」她低聲說，喉嚨發緊。Yoko的身體僵硬地跟隨著Faye的引導，鎖鍊在脖頸上輕輕晃動，每一步都像在提醒她現在的處境。當她們走進浴室，Yoko被眼前的景象再次衝擊。這不是普通的浴室，而是一個結合了豪華水療和情趣氛圍的私人空間。白色的浴缸比常見的尺寸大上許多，旁邊擺放著精緻的香氛蠟燭和幾瓶不同氣味的精油。鏡子邊緣鑲嵌著柔和的LED燈，讓整個空間散發出溫暖而曖昧的光線。",
+                "choices": [
+                    {"text": "faye 命令yoko準備沐浴", "next": "path_bathroom_prepare"}
+                ]
+            },
+            {
+                "id": "end_refuse",
+                "paragraph": "你選擇了離開，故事在這裡畫上句點。Yoko回到了她那充滿現實壓力的生活，帶著一絲後悔和未知的迷茫。",
+                "choices": []
+            },
+            {
+                "id": "end_retreat",
+                "paragraph": "你選擇了退縮，故事在這裡結束。Yoko在屈辱和自我厭惡中逃離，錯失了一次可能改變她命運的機會。",
+                "choices": []
+            },
+            {
+                "id": "path_faye_next_step",
+                "paragraph": "Faye的指尖輕柔地遊走在Yoko的脖頸上，最終落在項圈邊緣。她沒有立即行動，只是用拇指輕輕摩挲著皮革，那動作帶著一種無聲的暗示和玩味。Yoko的心臟狂跳，她感到自己的身體在Faye的觸碰下變得異常敏感。Faye俯下身，幾乎貼在Yoko耳邊，溫熱的呼吸讓Yoko的耳垂發燙。「妳說，妳要證明自己不是我的狗？」Faye輕聲低語，語氣中帶著一絲挑逗，「那麼，今晚，就讓我看看，妳這隻『不聽話』的小狗，能玩出什麼花樣。」她輕輕一拉鎖鍊，將Yoko更深地帶入她的領域。",
+                "choices": [
+                    {"text": "yoko 被牽引", "next": "path_bathroom_intro"}
+                ]
+            },
+            {
+                "id": "path_struggle",
+                "paragraph": "Yoko咬緊牙關，猛地扭動手腕，試圖掙脫Faye的束縛。她眼神中的倔強與不甘化作一股強烈的反抗。然而，Faye的力量超乎她的想像，她發現自己的掙扎幾乎是徒勞。Faye的笑容更深了，眼中閃爍著勝利的光芒。「想掙脫嗎？小狗。」Faye輕蔑地說，隨後更用力地握緊Yoko的手腕，讓她無法動彈，「妳越是反抗，我就越想看妳臣服的樣子。」Yoko感到一股絕望湧上心頭，她的身體被Faye完全掌控，所有的反抗都變成了燃料，助長了Faye的支配欲。",
+                "choices": [
+                    {"text": "yoko 最終放棄掙扎", "next": "path_surrender"}
+                ]
+            },
+            {
+                "id": "path_surrender",
+                "paragraph": "Yoko的身體僵硬，最終放棄了掙扎。她感到自己的力量在Faye面前是如此微不足道。她垂下眼眸，長長的睫毛在臉頰上投下陰影，遮住了她此刻複雜而羞恥的眼神。Faye看著Yoko的順從，滿意地笑了。她鬆開Yoko的手腕，轉而輕輕撫摸她的髮絲，那動作帶著一種寵溺，卻又充滿了勝利者的姿態。「這才是乖狗狗的樣子。」Faye的聲音輕柔，卻帶著不容置疑的掌控，「現在，我們來玩一個更有趣的遊戲，好嗎？」",
+                "choices": [
+                    {"text": "yoko 接受faye的遊戲", "next": "path_bathroom_intro"}
+                ]
+            }
+        ];
+
+        let currentStoryId = "start";
+        const storyTextElement = document.getElementById("story-text");
+        const choicesContainerElement = document.getElementById("choices-container");
+
+        function findStoryById(id) {
+            return storyData.find(story => story.id === id);
+        }
+
+        function renderStory(storyId) {
+            const story = findStoryById(storyId);
+
+            if (!story) {
+                storyTextElement.innerHTML = `<p class="text-brown-dark">故事在這裡結束了，感謝您的閱讀。</p>`;
+                choicesContainerElement.innerHTML = '';
+                return;
+            }
+
+            // Update story text with a subtle fade effect
+            storyTextElement.style.opacity = '0';
+            setTimeout(() => {
+                storyTextElement.innerHTML = `<p class="whitespace-pre-wrap">${story.paragraph}</p>`;
+                storyTextElement.style.opacity = '1';
+            }, 300); // Match CSS transition duration
+
+            // Clear previous choices
+            choicesContainerElement.innerHTML = '';
+
+            // Add new choice buttons
+            if (story.choices && story.choices.length > 0) {
+                story.choices.forEach(choice => {
+                    const button = document.createElement("button");
+                    button.textContent = choice.text;
+                    button.onclick = () => makeChoice(choice.next);
+                    button.className = "flex-grow px-6 py-3 rounded-full font-display font-semibold text-lg sm:text-xl text-brown-dark bg-coffee-light hover:bg-coffee-darker hover:text-cream-lighter transition-all duration-300 ease-in-out shadow-md hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-accent-dusty-rose focus:ring-opacity-75 whitespace-normal break-words";
+                    choicesContainerElement.appendChild(button);
+                });
+            } else {
+                // If no choices, display an ending message
+                const endMessage = document.createElement("p");
+                endMessage.textContent = "故事在此告一段落。";
+                endMessage.className = "text-brown-dark text-xl sm:text-2xl font-display font-medium text-center py-4";
+                choicesContainerElement.appendChild(endMessage);
+            }
+
+            // Scroll to top of the story container on new content
+            storyTextElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function makeChoice(nextStoryId) {
+            currentStoryId = nextStoryId;
+            renderStory(currentStoryId);
+        }
+
+        // Initial render on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            renderStory(currentStoryId);
+        });
+    </script>
+</body>
+</html>
