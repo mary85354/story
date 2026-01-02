@@ -68,4 +68,57 @@
         </header>
 
         <main class="w-full max-w-4xl glass-card rounded-3xl p-6 sm:p-10 border-t border-l border-white/60">
-            <section id="story-text" class="text-lg sm:text-xl leading-relaxed text
+            <section id="story-text" class="text-lg sm:text-xl leading-relaxed text-text-primary transition-opacity duration-500 opacity-100"></section>
+            <section id="choices" class="flex flex-col sm:flex-row flex-wrap justify-center gap-4 mt-10 transition-opacity duration-500 opacity-100"></section>
+        </main>
+    </div>
+
+    <!-- ⭐ 回首頁按鈕（右下角） -->
+    <a href="index.html"
+       class="fixed bottom-6 right-6 bg-accent-button text-white px-6 py-3 rounded-full shadow-lg
+              hover:bg-accent-button-hover hover:scale-105
+              transition-all duration-300 ease-in-out
+              text-lg font-semibold z-50">
+        回首頁
+    </a>
+
+    <script>
+        const storyData = { /* 原本 storyData，未修改 */ };
+
+        const storyTextElement = document.getElementById('story-text');
+        const choicesElement = document.getElementById('choices');
+
+        function renderStory(segmentId) {
+            const segment = storyData[segmentId];
+            if (!segment) return;
+
+            storyTextElement.classList.replace('opacity-100', 'opacity-0');
+            choicesElement.classList.replace('opacity-100', 'opacity-0');
+
+            setTimeout(() => {
+                const paragraphs = segment.text.split('<br><br>');
+                storyTextElement.innerHTML = paragraphs.map(p => `<p class="story-p">${p}</p>`).join('');
+
+                choicesElement.innerHTML = '';
+                segment.choices.forEach(choice => {
+                    const button = document.createElement('button');
+                    button.textContent = choice.text;
+                    button.className = `
+                        bg-accent-button text-white font-body font-semibold py-3 px-8 rounded-full shadow-md
+                        hover:bg-accent-button-hover hover:scale-105 hover:shadow-xl
+                        transition-all duration-300 ease-in-out
+                        text-lg sm:text-xl min-w-[160px]
+                    `;
+                    button.onclick = () => renderStory(choice.next);
+                    choicesElement.appendChild(button);
+                });
+
+                storyTextElement.classList.replace('opacity-0', 'opacity-100');
+                choicesElement.classList.replace('opacity-0', 'opacity-100');
+            }, 500);
+        }
+
+        renderStory('start');
+    </script>
+</body>
+</html>
