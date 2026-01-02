@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yoko與Faye：選擇之夜</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Outfit:wght@100..900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -45,7 +46,6 @@
             border: 1px solid rgba(255, 255, 255, 0.4);
             box-shadow: 0 12px 40px 0 rgba(40, 30, 20, 0.1);
         }
-        /* Scannable scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: hsl(30, 30%, 80%); border-radius: 10px; }
@@ -54,145 +54,18 @@
         .story-p:first-of-type { text-indent: 0; font-weight: 500; }
     </style>
 </head>
+
 <body class="font-body text-text-primary overflow-y-auto">
     <div class="min-h-screen w-full flex flex-col items-center p-4 sm:p-8">
         
-        <header class="mb-8 text-center animate-fade-in">
-            <h1 class="font-display text-4xl sm:text-5xl font-bold text-text-secondary drop-shadow-sm">Yoko 與 Faye</h1>
-            <p class="font-body text-lg text-text-primary mt-2 opacity-80 italic">— 22樓的選擇之夜 —</p>
+        <header class="mb-8 text-center">
+            <h1 class="font-display text-4xl sm:text-5xl font-bold text-text-secondary drop-shadow-sm">
+                Yoko 與 Faye
+            </h1>
+            <p class="font-body text-lg text-text-primary mt-2 opacity-80 italic">
+                — 22樓的選擇之夜 —
+            </p>
         </header>
 
         <main class="w-full max-w-4xl glass-card rounded-3xl p-6 sm:p-10 border-t border-l border-white/60">
-            <section id="story-text" class="text-lg sm:text-xl leading-relaxed text-text-primary transition-opacity duration-500 opacity-100">
-                </section>
-
-            <section id="choices" class="flex flex-col sm:flex-row flex-wrap justify-center gap-4 mt-10 transition-opacity duration-500 opacity-100">
-                </section>
-        </main>
-    </div>
-
-    <script>
-        // Data from Version 2, formatted for Version 1 Template
-        const storyData = {
-            "start": {
-                text: "22樓的頂樓景觀房，落地窗外城市燈火如銀河傾瀉。Yoko扶著醉醺醺的Faye踏進玄關，靜得詭異，處處透露出主人的品味——極簡、昂貴，卻冷清得像一間水泥牢籠。<br><br>Faye坐在沙發上，手腕卻突然抓住了正想起身告辭的Yoko。「妳的銀行戶頭裡，剩沒多少錢了吧？」Yoko僵住，而Faye語氣帶著致命的誘惑：「幫我個忙，今晚讓我放鬆一下……我會付妳五萬，現金。」<br><br>Faye讓Yoko打開一個黑色絲絨盒子，裡面竟是一條附著銀製鎖鍊的皮質項圈。<br><br>「戴上它，爬到我腳邊。讓我今晚，擁有一隻屬於我的小狗。」",
-                choices: [
-                    { text: "戴上項圈", next: "path_collar_accept" },
-                    { text: "拒絕交易", next: "path_collar_refuse" },
-                    { text: "質問 Faye", next: "path_collar_question" }
-                ]
-            },
-            "path_collar_accept": {
-                text: "「這是交易。」Faye勾起嘴角，「妳缺錢，我給妳。妳給我想要的樣子，我給妳明天的喘息空間。」<br><br>現實的重擔將Yoko推向邊緣。皮革緊貼肌膚的那一瞬間，脖子傳來的壓迫感不是痛，而是比痛更深的屈服。「很好。」Faye聲音低沉帶著掌控一切的愉悅，「不愧是我挑中的女孩。」<br><br>Yoko垂下頭，不想看鏡子裡自己卑微的樣子。",
-                choices: [
-                    { text: "任由 Faye 牽引", next: "path_bathroom_intro" }
-                ]
-            },
-            "path_collar_refuse": {
-                text: "Yoko用力甩開手：「對不起，我不能這麼做！」走出大門時，冰冷的夜風吹不散心頭的沉重。父親的醫藥費、學貸……現實並未因拒絕而消失。<br><br>她抬頭看向夜空，城市的燈火依舊璀璨，而她，卻像一顆被拋棄的星辰，孤單又迷茫。",
-                choices: [
-                    { text: "重新開始", next: "start" }
-                ]
-            },
-            "path_collar_question": {
-                text: "「妳以為這樣就能讓我服從？」Yoko語氣帶著挑戰。Faye輕笑：「我想要看妳的掙扎，妳在慾望與尊嚴之間，最終會如何選擇。妳的身體比嘴巴誠實多了，小狗。」<br><br>Faye每一步都帶著無形的壓迫感，Yoko感到自己像是被困在蛛網中的獵物，越掙扎，纏繞得越緊。",
-                choices: [
-                    { text: "保持不動", next: "path_collar_question_still" },
-                    { text: "輕微後退", next: "path_collar_question_retreat" },
-                    { text: "大膽貼近", next: "path_collar_question_approach" }
-                ]
-            },
-            "path_collar_question_still": {
-                text: "Yoko僵硬地站著，那股酒香與香水味的誘惑讓她深處隱隱發熱。Faye指尖撫過她敏感的脖頸，「看來，妳並沒有想像中那麼排斥。」<br><br>Yoko的心跳加速，眼神不再只有防備，還多了一絲自己都未曾察覺的……臣服。",
-                choices: [
-                    { text: "繫上項圈", next: "path_collar_accept" }
-                ]
-            },
-            "path_collar_question_retreat": {
-                text: "Yoko後退直到背部抵住冰冷的牆壁，Faye的眼神閃過一絲銳利與不悅：「既然妳不喜歡這個遊戲，那我也不強求。拿著錢，妳可以走了。」<br><br>Yoko跑出公寓，心在滴血，尊嚴盡失，期望的一切似乎都煙消雲散。",
-                choices: [
-                    { text: "重新開始", next: "start" }
-                ]
-            },
-            "path_collar_question_approach": {
-                text: "Yoko不退反進，幾乎貼上了Faye。眼神帶著自毀的決絕：「我要證明給妳看，我不是任何人的狗。現在……妳其實是想被我馴服？」<br><br>Faye的笑容凝固，似乎沒料到這隻小狗會露出獠牙反咬一口。",
-                choices: [
-                    { text: "等待 Faye 的反應", next: "path_faye_silent" },
-                    { text: "看她如何反擊", next: "path_faye_counter" }
-                ]
-            },
-            "path_faye_silent": {
-                text: "Faye凝視著Yoko，眼中燃燒著危險的火光：「妳比我想像中更有趣，今晚，遊戲才剛剛開始。」她的指尖流連在Yoko耳畔，極盡溫柔，卻是在宣示主權。",
-                choices: [
-                    { text: "被牽入室內", next: "path_bathroom_intro" }
-                ]
-            },
-            "path_faye_counter": {
-                text: "Faye反手扣住Yoko的手腕：「想馴服我？小狗，妳太高估自己了。」她將Yoko拉得更近，氣息將其包圍：「別忘了，誰在誰的公寓，誰又更需要這筆錢。」",
-                choices: [
-                    { text: "掙扎", next: "path_struggle" },
-                    { text: "放棄抵抗", next: "path_surrender" }
-                ]
-            },
-            "path_bathroom_intro": {
-                text: "Faye拉動鎖鍊：「浴室在哪？」當她們進去時，Yoko再次被震驚。這不是普通浴室，而是結合了豪華水療與曖昧光線的私人空間。大浴缸旁擺滿香氛，LED燈讓一切顯得極其誘人。<br><br>在這裡，身份徹底模糊了。",
-                choices: [
-                    { text: "故事待續（重新開始）", next: "start" }
-                ]
-            },
-            "path_struggle": {
-                text: "掙扎是徒勞的，反抗反而成了助長Faye支配欲的燃料。Faye更用力地握緊她的手腕：「妳越反抗，我就越想看妳臣服。」",
-                choices: [
-                    { text: "最終放棄掙扎", next: "path_surrender" }
-                ]
-            },
-            "path_surrender": {
-                text: "Yoko放棄了。她垂下眼眸，遮住羞恥的眼神。Faye滿意地摸摸她的髮絲：「這才是乖狗狗的樣子。現在，我們來玩更有趣的。」",
-                choices: [
-                    { text: "接受遊戲", next: "path_bathroom_intro" }
-                ]
-            }
-        };
-
-        const storyTextElement = document.getElementById('story-text');
-        const choicesElement = document.getElementById('choices');
-
-        function renderStory(segmentId) {
-            const segment = storyData[segmentId];
-            if (!segment) return;
-
-            // Fade Out Effect
-            storyTextElement.classList.replace('opacity-100', 'opacity-0');
-            choicesElement.classList.replace('opacity-100', 'opacity-0');
-
-            setTimeout(() => {
-                // Update Text with custom paragraphs
-                const paragraphs = segment.text.split('<br><br>');
-                storyTextElement.innerHTML = paragraphs.map(p => `<p class="story-p">${p}</p>`).join('');
-                
-                // Update Choices
-                choicesElement.innerHTML = '';
-                segment.choices.forEach(choice => {
-                    const button = document.createElement('button');
-                    button.textContent = choice.text;
-                    button.className = `
-                        bg-accent-button text-white font-body font-semibold py-3 px-8 rounded-full shadow-md
-                        hover:bg-accent-button-hover hover:scale-105 hover:shadow-xl
-                        transition-all duration-300 ease-in-out transform
-                        text-lg sm:text-xl min-w-[160px]
-                    `;
-                    button.onclick = () => renderStory(choice.next);
-                    choicesElement.appendChild(button);
-                });
-
-                // Fade In Effect
-                storyTextElement.classList.replace('opacity-0', 'opacity-100');
-                choicesElement.classList.replace('opacity-0', 'opacity-100');
-            }, 500);
-        }
-
-        // Initial Start
-        renderStory('start');
-    </script>
-</body>
-</html>
+            <section id="story-text" class="text-lg sm:text-xl leading-relaxed text
