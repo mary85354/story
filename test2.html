@@ -3,291 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yoko與Faye的小故事</title>
-    <!-- Google Fonts: Lora for elegant display, Outfit for modern body text -->
+    <title>Faye & Yoko：深夜客房</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS CDN -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Outfit:wght@100..900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Tailwind CSS Configuration Extension -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'bg-soft': 'hsl(30, 40%, 97%)', // Very light beige/cream for background
-                        'text-primary': 'hsl(28, 20%, 30%)', // Soft medium brown for primary text
-                        'text-secondary': 'hsl(20, 10%, 45%)', // Darker grey-brown for secondary text/contrast
-                        'accent-button': 'hsl(30, 40%, 60%)', // Richer, muted coffee brown for buttons
-                        'accent-button-hover': 'hsl(30, 40%, 50%)', // Slightly darker coffee brown for hover
+                        'bg-soft': 'hsl(30, 40%, 97%)', 
+                        'text-primary': 'hsl(28, 20%, 25%)', 
+                        'text-secondary': 'hsl(20, 15%, 35%)', 
+                        'accent-button': 'hsl(30, 30%, 60%)', 
+                        'accent-button-hover': 'hsl(30, 30%, 45%)', 
+                        'back-button': 'hsl(20, 10%, 50%)',
                     },
                     fontFamily: {
-                        display: ['Lora', 'serif'], // Elegant serif for titles
-                        body: ['Outfit', 'sans-serif'], // Clean sans-serif for main content and buttons
+                        display: ['Lora', 'serif'], 
+                        body: ['"Noto Sans TC"', 'Outfit', 'sans-serif'], 
                     },
                 }
             }
         }
     </script>
-
-    <!-- Custom CSS for global styles, gradients, glassmorphism, and scrollbar -->
     <style>
         body {
-            /* Subtle radial gradient for a premium, serene background feel */
             background: radial-gradient(circle at center, hsl(30, 60%, 95%) 0%, hsl(30, 40%, 90%) 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: var(--font-body); /* Fallback for custom properties */
+            min-height: 100vh; margin: 0; overflow-x: hidden;
         }
-        /* Glassmorphism effect for the main content card */
-        .glass-card {
-            background-color: rgba(255, 255, 255, 0.4); /* Semi-transparent white */
-            backdrop-filter: blur(15px) saturate(180%); /* Blur and saturate effect */
-            -webkit-backdrop-filter: blur(15px) saturate(180%); /* Safari support */
-            border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle white border for definition */
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15); /* Soft, pronounced shadow for depth */
-        }
-        /* Custom scrollbar for aesthetic appeal */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: hsl(30, 40%, 97%); /* Matches soft background */
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: hsl(30, 40%, 60%); /* Matches button color */
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: hsl(30, 40%, 50%); /* Darker on hover */
-        }
-        /* Ensures text balance for aesthetic typography on supported browsers */
-        .text-balance {
-            text-wrap: balance;
-        }
+        .side-bg { position: fixed; top: 0; width: 33.333333%; height: 100vh; background-size: cover; background-position: center; z-index: 0; }
+        .side-bg-left { left: 0; background-image: url('https://i.meee.com.tw/368EWT3.jpg'); border-right: 1px solid rgba(255, 255, 255, 0.2); }
+        .side-bg-right { right: 0; background-image: url('https://i.meee.com.tw/5f75udR.jpg'); border-left: 1px solid rgba(255, 255, 255, 0.2); }
+        @media (max-width: 1024px) { .side-bg { display: none !important; } }
+        .page-wrapper { display: flex; flex-direction: column; min-height: 100vh; width: 100%; position: relative; z-index: 10; }
+        .header-area { width: 100%; padding-top: 2rem; text-align: center; }
+        .main-content-center-box { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+        .glass-card { background-color: rgba(255, 255, 255, 0.45); backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 12px 40px 0 rgba(40, 30, 20, 0.1); }
+        .story-p { margin-bottom: 1.5rem; text-indent: 2rem; }
+        .story-p:first-of-type { text-indent: 0; font-weight: 500; }
+        .bad-end { color: #991b1b; font-weight: bold; padding-top: 1rem; margin-top: 2rem; border-top: 1px solid #991b1b44; }
+        .happy-end-text { color: #c2410c; font-weight: bold; padding-top: 1rem; margin-top: 2rem; }
+        .good-end-text { color: #15803d; font-weight: bold; padding-top: 1rem; margin-top: 2rem; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: hsl(30, 30%, 80%); border-radius: 10px; }
     </style>
 </head>
 <body class="font-body text-text-primary overflow-y-auto">
-    <div class="min-h-screen w-full flex flex-col items-center p-4 sm:p-6 md:p-8">
-        <!-- Header: Subtle and clean with elegant typography -->
-        <header class="mb-8 text-center animate-fade-in">
-            <h1 class="font-display text-4xl sm:text-5xl font-bold text-text-secondary drop-shadow-sm">Yoko與Faye的小故事</h1>
-            <p class="font-body text-lg sm:text-xl text-text-primary mt-2">一個小小故事選擇遊戲</p>
+    <div class="side-bg side-bg-left"></div>
+    <div class="side-bg side-bg-right"></div>
+    <div class="page-wrapper">
+        <header class="header-area animate-fade-in">
+            <h1 class="font-display text-4xl sm:text-5xl font-bold text-text-secondary drop-shadow-sm">Faye & Yoko</h1>
+            <p class="font-body text-lg text-text-primary mt-2 opacity-80 italic">— 深夜客房 —</p>
         </header>
-
-        <!-- Main Story Container: Centered, max-width for readability, with glassmorphism effect -->
-        <main class="w-full max-w-4xl glass-card rounded-3xl p-6 sm:p-8 md:p-10 border-t border-l border-white/50 transition-all duration-300 ease-in-out">
-            <!-- Story Narrative Section: Prominent, readable text with ample spacing -->
-            <section id="story-text" class="mb-8 text-lg sm:text-xl leading-relaxed text-text-primary space-y-5 opacity-0 transition-opacity duration-500">
-                <!-- Story content will be dynamically injected here by JavaScript -->
-            </section>
-
-            <!-- Choice Buttons Section: Visually distinct, responsive layout, interactive -->
-            <section id="choices" class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 mt-8 opacity-0 transition-opacity duration-500">
-                <!-- Choice buttons will be dynamically injected here by JavaScript -->
-            </section>
-        </main>
+        <div class="main-content-center-box">
+            <main class="w-full max-w-4xl glass-card rounded-3xl p-6 sm:p-10 border-t border-l border-white/60">
+                <section id="story-text" class="text-lg sm:text-xl leading-relaxed text-text-primary transition-opacity duration-500 opacity-100"></section>
+                
+                <div id="action-area" class="mt-10 flex flex-col items-center gap-4 transition-opacity duration-500 opacity-100">
+                    <section id="choices" class="flex flex-col sm:flex-row flex-wrap justify-center gap-4 w-full"></section>
+                    <section id="navigation" class="w-full flex justify-center"></section>
+                </div>
+            </main>
+        </div>
+        <div class="h-16"></div>
     </div>
 
     <script>
-        // Story data structure with segments and branching choices
         const storyData = {
             "start": {
-                text: `
-                    <p>Yoko與Faye的愛，如清晨的咖啡與傍晚的散步，是刻進日常的溫暖甜意。</p>
-                    <p>他們會在廚房為一個調味輕聲笑鬧，在深夜的耳語中分享夢想。他們的愛，從來都是大方且飽滿地存在著。</p>
-                    <p>最近，Faye的公司接下了一個重要的服飾系列專案，壓力山大。與她同級的設計師Wan，氣質陰鬱，對Faye的才華懷著複雜的情感——既有隱約的欣賞，也有深藏的嫉妒。</p>
-                    <p>「Yoko，妳說奇怪不奇怪？」Faye有一天向Yoko傾訴，「Wan她對我很好，也很幫忙，可是我總覺得她好像藏著什麼。」Faye描述了Wan的種種異狀，她會頻繁地提起自己過去的設計成功案例，會「不小心」將Faye的設計稿與其他材料混淆，導致進度延遲。</p>
-                    <p>更讓Faye疑心的是，她總覺得供應商送來的樣布顏色有染料瑕疵，但之前確認過的樣品明明沒問題。Faye沒有證據，只能將這份疑慮壓在心底。</p>
-                    <p>Yoko憑著直覺，認為這些都不是巧合，因為Faye的細緻與謹慎，不可能在如此關鍵的環節出錯。她提醒Faye：「要小心，Faye。」</p>
-                    <p>那天，Faye原定下班後要與Yoko去看電影。Yoko在家準備了豐盛的晚餐，Faye的電話卻在這個時候響起。</p>
-                    <p>「Yoko，我恐怕會很晚，可能要通宵了。」Faye的聲音透著疲憊，「公司發現新系列布料出了大問題，關鍵材料的染料有嚴重瑕疵，根本不能用。我和Wan要留下來緊急採購。」</p>
-                    <p>Yoko的心一沉。她腦中瞬間閃過Wan的身影，直覺告訴她，這一切都與Wan脫不了關係。她知道Faye對這個專案的投入，也知道Wan在專案中的角色。</p>
-                    <p>Faye無奈地說，Wan堅稱是供應商的失誤，但之前的樣品明明是沒問題的。</p>
-                    <p>「Yoko，我今晚要和Wan通宵了，對不起。」Faye的簡訊傳來。Yoko感到一陣不安，她意識到Wan可能帶來的潛在危險。她不能坐視不理，讓Faye獨自面對這一切。</p>
-                `,
+                text: "下班後的爭吵讓屋子裡的空氣凝結著冰冷的尷尬。Yoko賭氣地抱著枕頭，將自己關進了另一間客房，留下Faye獨自一人面對空蕩的雙人床。<br><br>Faye的心頭沉甸甸的，翻來覆去也睡不著。另一邊，客房裡的Yoko也並不安穩，少了身邊熟悉的體溫和Faye的輕柔擁抱，她感到一股難以言喻的空虛。習慣性的，她的手不自覺地滑向自己的肌膚，試圖尋找一絲慰藉。<br><br>微弱的呻吟聲不經意地從她口中溢出，在這靜謐的夜裡顯得格外清晰，清晰到，隔壁房的Faye也能聽得一清二楚。Faye的心臟猛地一跳，她輕手輕腳地下了床，摸黑靠近了客房門。黑暗中，Faye的手放在門把上，正猶豫著行動。Yoko絲毫沒有注意到Faye的靠近。<br><br>接下來 Faye 該怎麼做？",
                 choices: [
-                    { text: "衝去公司見Faye，給她支持。", next: "choice1a" },
-                    { text: "傳簡訊給Faye，表達關心並暗示懷疑，承諾等她解釋。", next: "choice2b_text_intro" },
-                    { text: "待在家裡，發送暖心簡訊，相信Faye能自己處理。", next: "choice1c_unimplemented" }
+                    { text: "敲門，輕聲呼喚", next: "path_knock" },
+                    { text: "在門外偷聽", next: "path_listen" },
+                    { text: "直接闖入", next: "path_enter" }
                 ]
             },
-            "choice1a": {
-                text: `
-                    <p>Yoko趕到Faye的公司。警衛以Faye和Wan正在開會為由，最初不允許Yoko進入。Yoko堅稱自己是家屬，有緊急事項，Faye同意下樓。</p>
-                    <p>Faye出現了，臉色蒼白，神情疲憊。她看到Yoko，先是驚訝，隨後帶著一絲自責。「Yoko，妳怎麼來了？」</p>
-                    <p>Yoko心疼地握住Faye的手，擔憂地問：「布料的問題到底怎麼回事？是不是真的只是意外？」</p>
-                    <p>這時，Wan從電梯口走了出來，她的笑容在看到Yoko的那一刻僵住了。她語氣冷淡地問Yoko為何在此，並暗示Yoko是外人，不該干涉公司事務。</p>
-                    <p>Yoko直接看向Faye，語氣堅定：「Faye，這真的是『意外』嗎？」Faye神情複雜地看了Wan一眼，顯得極為矛盾。</p>
-                    <p>Wan立即插話，語氣帶著明顯的不悅：「這位小姐，妳這是在暗示什麼？布料問題我們會內部處理，請妳不要打擾Faye工作，讓她專心處理公事。」她轉向Faye：「Faye，請妳讓妳的朋友離開。」</p>
-                    <p>Faye夾在兩人中間，焦急地看了Yoko一眼，既擔心Yoko的處境，也顧慮自己的工作。</p>
-                `,
+            "path_knock": {
+                text: "Faye站在客房門外，深吸了一口氣。她抬起手，輕輕在門板上敲了三下。<br><br>「Yoko……妳睡了嗎？」<br><br>房內的動作瞬間停了。Yoko原本急促的呼吸聲戛而止，取而代之的是短暫的沉默。她拉起被子蓋住自己微微發燙的身體，心跳得厲害——剛才的聲音，Faye聽見了多少？<br><br>過了幾秒，Yoko清了清嗓子，努力讓語氣聽起來平靜，卻還是藏不住那點慌亂：「……還沒。怎麼了？」<br><br>門被緩緩拉開一條縫。Faye探頭進來望了望，只見Yoko露出一張被夜燈映得微紅的臉。<br><br>「我想跟妳談談……。」Faye小心翼翼的詢問，深怕Yoko更加憤怒。<br><br>「……進來吧。」她小聲說完，轉身走回床邊背對著Faye坐下。房間裡的空氣仍帶著剛才殘留的曖昧氣息，讓Faye的心跳又漏了一拍。<br><br>Faye下一步的動作是？",
                 choices: [
-                    { text: "堅持留下，要求Faye解釋布料問題。", next: "choice2a_unimplemented" },
-                    { text: "暫時離開，但發簡訊約Faye稍後見面，並警告她提防Wan。", next: "choice2b" },
-                    { text: "假裝只是送餐，然後離開，避免讓Faye情況更複雜。", next: "choice2c_unimplemented" }
+                    { text: "坐在床邊安撫她", next: "path_sit_bed" },
+                    { text: "從背後輕輕抱住她", next: "path_hug_back" },
+                    { text: "壞心地詢問剛才的聲音", next: "path_tease" }
                 ]
             },
-            "choice2b_text_intro": { // Bridge path from Choice 1b to the 2b outcome
-                text: `
-                    <p>Yoko給Faye發了簡訊，表達了深深的關心：「Faye，別怕，我會等妳。等妳回家後，我們好好談談布料的事。小心Wan。」</p>
-                    <p>Yoko回到家，心頭沉重。凌晨三點，Faye拖著疲憊的身軀回到了家。</p>
-                    <p>Yoko緊緊抱住她，輕聲安慰。Faye終於卸下了所有防備，她告訴Yoko，布料問題實在太蹊蹺了，送來的批次與她們之前核對的樣品根本不符。她懷疑Wan一直在針對她，不著痕跡地篡改設計稿，甚至可能動了布料訂單的手腳。</p>
-                    <p>Yoko堅定地告訴Faye，這就是職場霸凌，她會幫助Faye找出證據，證明Wan的惡行。</p>
-                `,
+            "path_hug_back": {
+                text: "Faye輕手輕腳地繞到床的另一側，從背後輕輕環住Yoko的腰。掌心貼上她睡袍下微微發熱的腹部。Faye把下巴輕輕擱在她肩上，鼻尖蹭過她耳後細軟的髮絲。<br><br>「還在生氣嗎？」Faye的聲音低低的，貼在她耳邊，「我都主動投降了，寶貝還要我怎麼辦才肯原諒我？」<br><br>Yoko嘴上說著「誰要你抱」，身體卻不自覺地往後靠，讓背脊貼上Faye的胸口。Faye故意鬆了鬆手臂，又立刻收緊，「嗯？抓著我不放的是誰呀？」<br><br>Yoko最終只是輕哼了一聲，把臉埋進Faye的頸窩，小聲地嘀咕：「……壞蛋。」",
                 choices: [
-                    { text: "秘密收集Wan關於布料和設計的證據。", next: "choice3a" },
-                    { text: "匿名向公司管理層報告Wan的行為，要求調查。", next: "choice3b_unimplemented" },
-                    { text: "請Faye悄悄向信任的同事打聽Wan過去的行為。", next: "choice3c_unimplemented" }
+                    { text: "調皮地戲弄她", next: "path_hug_neck_kiss" },
+                    { text: "靜靜地聽對方的話", next: "path_hug_face_to_face" },
+                    { text: "徹底解開睡袍繫帶", next: "path_hug_undress" }
                 ]
             },
-            "choice2b": { // Direct outcome from Choice 2b (from Choice 1a)
-                text: `
-                    <p>Yoko決定暫時離開，她將保溫瓶裡的熱湯和點心遞給Faye，眼神中傳達著無聲的支持。</p>
-                    <p>回到家後，Yoko立刻給Faye發了簡訊：「別怕，我會等妳。等妳回家後，我們好好談談布料的事。小心Wan。」</p>
-                    <p>Yoko回到家，心頭沉重。凌晨三點，Faye拖著疲憊的身軀回到了家。</p>
-                    <p>Yoko緊緊抱住她，輕聲安慰。Faye終於卸下了所有防備，她告訴Yoko，布料問題實在太蹊蹺了，送來的批次與她們之前核對的樣品根本不符。她懷疑Wan一直在針對她，不著痕跡地篡改設計稿，甚至可能動了布料訂單的手腳。</p>
-                    <p>Yoko堅定地告訴Faye，這就是職場霸凌，她會幫助Faye找出證據，證明Wan的惡行。</p>
-                `,
+            "path_hug_neck_kiss": {
+                text: "Faye故意用鼻尖蹭她的脖子，逗她笑，問她：「要不要我幫妳……把剛才沒做完的事做完？」那片敏感的肌膚立刻起了一層細小的雞皮疙瘩。<br><br>Faye從後面抱著Yoko，感受她逐漸放軟的身體。她微微側頭，唇瓣若有似無地刷過Yoko的耳廓，然後輕輕含住那顆小巧的耳垂。Yoko倒抽一口氣，Faye趁勢將她整個人轉過來，讓Yoko面對自己坐在床上。<br><br>那個吻起初只是輕輕一碰。Yoko終於主動迎上去，雙臂環住Faye的脖子，讓這個吻慢慢加深。好一會兒，Faye才意猶未盡地退開一些，一隻手順勢滑到Yoko的胸前，隔著薄薄的睡袍布料，輕輕揉捏那已經挺立的柔軟。<br><br>「還在生氣嗎？」Faye的聲音啞得厲害。Yoko紅著臉搖頭，聲音細如蚊鳴：「……不氣了。」<br><br><div class='happy-end-text'>【煽情結局：深夜的補償】<br>床鋪劇烈地晃動起來，比剛才Yoko獨自一人的時候更加瘋狂。這一夜還很長，去填補那一整天的冷戰空隙。</div>",
+                choices: [{ text: "重新開始遊戲", next: "start" }]
+            },
+            "path_hug_face_to_face": {
+                text: "Faye沒有說話，只是靜靜地從後面環住Yoko的腰，將她整個人輕輕圈進懷裡。下巴擱在她肩上，像一個不會輕易鬆開的承諾。Yoko低低地嘆了口氣，那聲音裡帶著一整天的疲憊。<br><br>「對不起。」Faye的聲音輕而認真，「今天是我沒站在妳的角度想。妳已經很努力了，我卻還跟妳吵……是我錯了。」<br><br>Yoko搖了搖頭，手指抓著Faye的手臂。「不是你的錯……是我太玻璃心。」Faye心疼地收緊了手臂。「不應該。妳每天加班，誰敢說妳不夠好，我第一個不答應。」<br><br>她轉過Yoko的身體，雙手捧起她的臉。「明天按妳的節奏來，妳不是一個人，我在家等妳。」Yoko終於露出今天第一個淺淺的笑。<br><br>Faye低頭印下輕吻。「走吧，回我們房間睡覺。」她彎腰將Yoko打橫抱起。回到主臥，Faye從後面抱住Yoko，手掌輕拍，像在哄孩子入睡。<br><br>「晚安，寶貝。」Faye低語。Yoko十指相扣，聲音軟軟地回應：「……晚安。」<br><br><div class='good-end-text'>【Good End：溫暖的歸處】<br>房間裡只剩下兩人平穩的呼吸聲，窗外月光灑落，這一夜，終於安穩。</div>",
+                choices: [{ text: "重新開始遊戲", next: "start" }]
+            },
+            "path_listen": {
+                text: "Faye沒有敲門，也沒有出聲。她屏住呼吸，額頭輕輕抵在冰冷的門板上，耳朵貼得更近。<br><br>客房裡的聲音變得更清晰了。Yoko的呼吸原本急促而凌亂，此刻似乎因為以為自己獨處，而逐漸放開。細碎的布料摩擦聲、輕微的床鋪晃動聲，還有那壓抑不住的、帶著水潤鼻音的低吟，一下一下，像細針般刺進Faye的耳膜。<br><br>Faye的臉頰發燙，心跳快得幾乎要衝出胸腔。她知道自己不該聽，卻又像被無形的線牽住，腳步挪不開。Yoko的聲音越來越軟，越來越破碎，甚至在某個瞬間，輕輕喚出了一聲「Faye……」<br><br>就是這一聲，讓Faye渾身一顫。<br><br>然而，就在下一秒，房內突然安靜下來。床鋪的晃動停了，呼吸聲也驟然收斂。Faye還沒反應過來，便聽見Yoko低低地、帶著顫音的自語：「……門外，是不是有人？」<br><br>Faye心頭一緊，還來不及後退，門便猛地被拉開。<br><br>Yoko站在門口，只裹著薄薄的睡袍，長髮散亂，臉頰緋紅，眼睛卻因羞恥與憤怒而泛起水光。她一眼就看見了貼在門外、還維持著偷聽姿勢的Faye。空氣瞬間凝固。<br><br>「妳……在偷聽？」Yoko的聲音從極低的顫抖，迅速轉為尖銳的憤怒，「我剛剛的聲音，妳全聽見了對不對？」<br><br>Faye張口想解釋，卻一個字也擠不出來。Yoko的眼淚瞬間奪眶而出，又羞又氣地用力將門甩上，發出巨響。門板狠狠撞在Faye的鼻尖前，讓她踉蹌退了半步。<br><br>「滾！」Yoko的哭喊從門內傳出，聲音哽咽而絕決，「我最討厭妳這樣！吵架的時候不來哄我，現在卻躲在門外偷聽我最難為情的時候……妳到底把我當什麼！」<br><br>隔著門板，Faye聽見Yoko將自己摔回床上，壓抑的哭聲混著枕頭被用力砸向牆壁的悶響。這一夜，兩人之間的裂痕比吵架前更深了。<br><br><div class='bad-end'>【遊戲失敗】<br>Yoko對Faye的信任崩潰，兩人從此陷入長期的冷戰。這段關係，再也回不到從前。<br>（Bad End：偷聽的代價）</div>",
+                choices: [{ text: "重新開始遊戲", next: "start" }]
+            },
+            "path_enter": {
+                text: "Faye堅定地推開了門。Yoko蜷在床上，睡袍肩帶滑落。Faye在床沿坐下，伸手拂開Yoko額前凌亂的髮絲。「對不起……我知道妳今天很累。」<br><br>Yoko的手指慢慢放鬆，反過來扣住了Faye。那一個小小的動作，像把兩人之間的冰一點點融化。",
                 choices: [
-                    { text: "秘密收集Wan關於布料和設計的證據。", next: "choice3a" },
-                    { text: "匿名向公司管理層報告Wan的行為，要求調查。", next: "choice3b_unimplemented" },
-                    { text: "請Faye悄悄向信任的同事打聽Wan過去的行為。", next: "choice3c_unimplemented" }
+                    { text: "將她擁入懷中", next: "path_enter_hug" },
+                    { text: "吻去她的淚水", next: "path_enter_kiss" },
+                    { text: "輕聲在她耳邊道歉", next: "path_enter_whisper" }
                 ]
             },
-            "choice3a": {
-                text: `
-                    <p>Yoko和Faye開始秘密調查。Faye備份了所有相關文件，Yoko則仔細分析這些資料。</p>
-                    <p>他們發現，在布料訂單的細節中，存在著細微的修改，例如將「深海藍」改為「午夜藍」，導致供應商提供了錯誤的布料。</p>
-                    <p>Yoko還發現了一封Wan發給供應商的私人郵件，其中提及了「特別安排」。他們意識到，這些間接證據還不夠，需要更直接的實錘。</p>
-                    <p>就在Faye準備最終提案的關鍵時刻，她最重要的設計稿和其數位備份竟然神秘消失了！Faye幾乎崩潰，她知道這將徹底毀掉她的提案，甚至可能讓她丟掉工作。</p>
-                    <p>Yoko聞訊，立即趕往Faye的公司。</p>
-                `,
-                choices: [
-                    { text: "通宵搜尋辦公室，Yoko利用專業技能恢復文件或重繪部分設計。", next: "choice4a" },
-                    { text: "設下圈套，讓Wan以為他們已經放棄，觀察她是否會露出馬腳，透露設計稿的位置或承認。", next: "choice4b_unimplemented" },
-                    { text: "聯繫客戶，解釋情況，請求寬限。", next: "choice4c_unimplemented" }
-                ]
+            "path_hug_undress": { text: "妳的手指輕輕解開繫帶... (內容待續)", choices: [{ text: "重新開始", next: "start" }] },
+            "path_sit_bed": { 
+                text: "Faye輕輕在床沿坐下，刻意留了一點距離，不想讓Yoko覺得被逼得太緊。她伸手握住Yoko那隻還攥著被角的手，指腹溫柔地摩挲著她微微發抖的手背。<br><br>「對不起，寶貝。」Faye的聲音低而穩，像深夜裡最柔軟的燈光，「今天我太沒耐心了，明明知道妳上班已經很累，還跟妳吵那些雞毛蒜皮的事……是我不好。」<br><br>Yoko原本繃緊的肩膀在這句話裡微微鬆了些。她仍低著頭，長髮遮住了半張臉，卻沒有抽回被握住的手。過了好一會兒，才傳來她細細的、帶著鼻音的聲音：<br><br>「……我也不是真的在生你的氣。」她終於抬眼看了Faye一眼，眼眶還紅紅的，「只是今天在公司被罵得很慘，回到家又怕妳覺得我無能……結果越想越委屈，就把氣撒在妳身上了。」<br><br>說到最後，她聲音越來越小，像做錯事的孩子。Faye心頭一軟，另一隻手也覆上去，將Yoko的雙手完全包進自己掌心，輕輕揉捏。<br><br>「妳一點都不無能。」Faye往前湊近了些，額頭幾乎要抵上Yoko的，「在我眼裡，妳永遠是最棒的。累了就靠著我，好不好？」<br><br>Yoko咬了咬下唇，終於點了點頭。她慢慢往Faye的方向傾過身，讓自己窩進那個熟悉的懷抱。Faye順勢張開手臂，將她圈得嚴嚴實實，一下一下輕拍她的背，像在哄一個受了驚的小動物。<br><br>Yoko的呼吸漸漸平穩，臉頰貼在Faye的肩窩，聲音悶悶地傳來：「……我好想你。」", 
+                choices: [{ text: "重新開始", next: "start" }]
             },
-            "choice4a": {
-                text: `
-                    <p>Yoko和Faye通宵在辦公室搜尋。Yoko憑藉對數位的敏銳，從Faye的電腦中恢復了部分設計稿和關鍵元素。她們憑藉著Faye的記憶和Yoko的專業，一點點地重繪著設計。</p>
-                    <p>當黎明的第一縷陽光灑進辦公室時，他們終於完成了一份可用的提案。Wan出現了，假裝關心，但當她看到她們完成的提案時，臉上的得意瞬間僵硬。Faye冷靜地與她對峙，Wan不發一語，臉色難看地離開。</p>
-                    <p>Yoko和Faye知道，這只是個開始，她們需要更確鑿的證據。</p>
-                `,
-                choices: [
-                    { text: "以恢復的設計為基礎，結合布料證據，向主管舉報Wan。", next: "choice5a" },
-                    { text: "私下與Wan對峙，揭露她的行為，期望她坦白或暴露更多。", next: "choice5b_unimplemented" },
-                    { text: "收集所有證據，但等待關鍵時機，讓Wan徹底無路可退。", next: "choice5c_unimplemented" }
-                ]
-            },
-            "choice5a": {
-                text: `
-                    <p>在Faye的提案成功後，Yoko和Faye整理了所有證據：被修改的訂單、可疑的郵件以及設計稿的恢復數據。</p>
-                    <p>他們將證據呈交給部門主管。主管大為震驚，立刻召集Wan和人力資源部門。面對鐵證如山，Wan啞口無言，無法反駁。</p>
-                    <p>調查發現，Wan早有類似前科。最終，Wan被公司解雇。Faye的工作環境重獲清淨，她的才華也得以盡情施展。</p>
-                    <p>Yoko和Faye的感情因此更加深厚，她們知道無論遇到什麼挑戰，只要攜手並進，便能一同克服。故事在他們相依相伴於向日葵花田的畫面中畫下句點，他們的愛，如向日葵般，永遠熾熱而耀眼。</p>
-                `,
-                choices: [
-                    { text: "重新開始遊戲", next: "start" }
-                ]
-            },
-            // Unimplemented paths lead to a placeholder message and restart option
-            "choice1c_unimplemented": {
-                text: "<p>Yoko選擇相信Faye能夠自己處理。然而，有些風暴，是需要兩個人一起面對的。這個選擇的後續發展，將會是另一個故事了。</p><p>（遊戲失敗，此路徑尚未完成，請選擇其他選項或重新開始。）</p>",
-                choices: [ { text: "重新開始遊戲", next: "start" } ]
-            },
-            "choice2a_unimplemented": {
-                text: "<p>Yoko堅持留下的行為，讓Faye陷入了更為尷尬和困難的境地。Wan因此抓住了機會，將矛頭指向Yoko，也讓Faye在公司的處境更加艱難。</p><p>（遊戲失敗，此路徑尚未完成，請選擇其他選項或重新開始。）</p>",
-                choices: [ { text: "重新開始遊戲", next: "start" } ]
-            },
-            "choice2c_unimplemented": {
-                text: "<p>Yoko選擇假裝只是送餐然後離開。她希望這樣能避免給Faye帶來更多麻煩，但同時也錯失了直接支持Faye的機會。Faye獨自面對的壓力更大了。</p><p>（遊戲失敗，此路徑尚未完成，請選擇其他選項或重新開始。）</p>",
-                choices: [ { text: "重新開始遊戲", next: "start" } ]
-            },
-            "choice3b_unimplemented": {
-                text: "<p>Yoko和Faye決定匿名向公司管理層報告Wan的行為。這是一個謹慎的選擇，但也意味著他們失去了主動掌控證據和節奏的機會。公司的調查進度緩慢，Wan也更加謹慎，讓事情變得複雜。</p><p>（遊戲失敗，此路徑尚未完成，請選擇其他選項或重新開始。）</p>",
-                choices: [ { text: "重新開始遊戲", next: "start" } ]
-            },
-            "choice3c_unimplemented": {
-                text: "<p>Faye悄悄向信任的同事打聽Wan的過去行為。她們收集到了一些關於Wan過往不良記錄的線索，但這些都是口頭傳聞，缺乏實質證據，難以作為指控的基礎。</p><p>（遊戲失敗，此路徑尚未完成，請選擇其他選項或重新開始。）</p>",
-                choices: [ { text: "重新開始遊戲", next: "start" } ]
-            },
-            "choice4b_unimplemented": {
-                text: "<p>Yoko和Faye決定設下圈套，讓Wan以為他們已經放棄。Wan確實因此放鬆了警惕，但她狡猾多疑，並沒有直接透露設計稿的位置，只是更加頻繁地在辦公室出現，似乎在監視著什麼。</p><p>（遊戲失敗，此路徑尚未完成，請選擇其他選項或重新開始。）</p>",
-                choices: [ { text: "重新開始遊戲", next: "start" } ]
-            },
-            "choice4c_unimplemented": {
-                text: "<p>Faye聯繫了客戶，解釋了設計稿丟失的情況，並請求寬限。客戶表示理解，但時間緊迫，他們的耐心也是有限的。Faye感到巨大的壓力，知道必須在短時間內拿出解決方案。</p><p>（遊戲失敗，此路徑尚未完成，請選擇其他選項或重新開始。）</p>",
-                choices: [ { text: "重新開始遊戲", next: "start" } ]
-            },
-            "choice5b_unimplemented": {
-                text: "<p>Yoko和Faye私下與Wan對峙，試圖讓她坦白。Wan雖然一開始有些動搖，但很快恢復了鎮定，她矢口否認所有指控，並反過來威脅Faye，讓Faye在公司的處境更加艱難。</p><p>（遊戲失敗，此路徑尚未完成，請選擇其他選項或重新開始。）</p>",
-                choices: [ { text: "重新開始遊戲", next: "start" } ]
-            },
-            "choice5c_unimplemented": {
-                text: "<p>Yoko和Faye決定收集所有證據，等待一個關鍵時機，讓Wan徹底無路可退。他們等待的過程充滿了煎熬，Wan的行動也越來越謹慎。這個策略的風險很高，需要極大的耐心和精準的判斷。</p><p>（遊戲失敗，此路徑尚未完成，請選擇其他選項或重新開始。）</p>",
-                choices: [ { text: "重新開始遊戲", next: "start" } ]
-            }
+            "path_tease": { text: "妳壞心地問起剛才的聲音... (內容待續)", choices: [{ text: "重新開始", next: "start" }] },
+            "path_enter_hug": { text: "擁抱... (內容待續)", choices: [{ text: "重新開始", next: "start" }] },
+            "path_enter_kiss": { text: "親吻淚水... (內容待續)", choices: [{ text: "重新開始", next: "start" }] },
+            "path_enter_whisper": { text: "低語... (內容待續)", choices: [{ text: "重新開始", next: "start" }] }
         };
 
-        const storyTextElement = document.getElementById('story-text');
-        const choicesElement = document.getElementById('choices');
+        let historyStack = [];
 
-        /**
-         * Renders a specific story segment, updating the narrative text and choice buttons.
-         * Includes a fade-in/fade-out animation for smooth transitions.
-         * @param {string} segmentId - The ID of the story segment to render.
-         */
-        function renderStory(segmentId) {
+        function renderStory(segmentId, isBack = false) {
             const segment = storyData[segmentId];
-            if (!segment) {
-                console.error("Story segment not found:", segmentId);
-                return;
-            }
+            if (!segment) return;
+            const storyTextElement = document.getElementById('story-text');
+            const actionArea = document.getElementById('action-area');
+            const choicesElement = document.getElementById('choices');
+            const navElement = document.getElementById('navigation');
 
-            // Animate fade out for current content
-            storyTextElement.classList.add('opacity-0');
-            choicesElement.classList.add('opacity-0');
+            if (!isBack && segmentId === 'start') historyStack = [];
 
-            // Wait for fade-out to complete, then update content and fade in
+            storyTextElement.classList.replace('opacity-100', 'opacity-0');
+            actionArea.classList.replace('opacity-100', 'opacity-0');
+
             setTimeout(() => {
-                storyTextElement.innerHTML = segment.text;
-                choicesElement.innerHTML = ''; // Clear previous choices
+                const paragraphs = segment.text.split('<br><br>');
+                storyTextElement.innerHTML = paragraphs.map(p => `<p class="story-p">${p}</p>`).join('');
+                choicesElement.innerHTML = '';
+                navElement.innerHTML = '';
 
-                segment.choices.forEach(choice => {
+                let shuffledChoices = [...segment.choices];
+                for (let i = shuffledChoices.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffledChoices[i], shuffledChoices[j]] = [shuffledChoices[j], shuffledChoices[i]];
+                }
+
+                shuffledChoices.forEach(choice => {
                     const button = document.createElement('button');
                     button.textContent = choice.text;
-                    button.className = `
-                        bg-accent-button text-white font-body font-semibold py-3 px-6 rounded-full shadow-lg
-                        hover:bg-accent-button-hover hover:scale-105
-                        transition-all duration-300 ease-in-out transform
-                        text-balance text-lg sm:text-xl
-                        min-w-[180px] sm:min-w-[220px] whitespace-normal
-                    `;
-                    button.onclick = () => renderStory(choice.next);
+                    button.className = `bg-accent-button text-white font-body font-semibold py-3 px-8 rounded-full shadow-md hover:bg-accent-button-hover hover:scale-105 transition-all duration-300 text-lg min-w-[280px] sm:min-w-[220px]`;
+                    button.onclick = () => {
+                        historyStack.push(segmentId);
+                        renderStory(choice.next);
+                    };
                     choicesElement.appendChild(button);
                 });
 
-                // Animate fade in for new content
-                storyTextElement.classList.remove('opacity-0');
-                choicesElement.classList.remove('opacity-0');
-            }, 500); // Duration matches the CSS transition-opacity duration
-        }
+                if (historyStack.length > 0) {
+                    const backBtn = document.createElement('button');
+                    backBtn.textContent = "⬅ 回到上一步動作";
+                    backBtn.className = `bg-gray-500/50 text-white font-body font-medium py-3 px-8 rounded-full border border-white/30 hover:bg-gray-600 transition-all duration-300 text-base w-full max-w-[280px] sm:max-w-[460px]`;
+                    backBtn.onclick = () => renderStory(historyStack.pop(), true);
+                    navElement.appendChild(backBtn);
+                }
 
-        // Initial render of the starting story segment
+                storyTextElement.classList.replace('opacity-0', 'opacity-100');
+                actionArea.classList.replace('opacity-0', 'opacity-100');
+            }, 500);
+        }
         renderStory('start');
     </script>
-<a href="index.html"
-   class="fixed bottom-6 right-6 bg-accent-button text-white px-6 py-3 rounded-full shadow-lg hover:bg-accent-button-hover hover:scale-105 transition-all duration-300 ease-in-out text-lg font-semibold z-50">
-    回首頁
-</a>
-    
 </body>
 </html>
