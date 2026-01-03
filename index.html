@@ -33,26 +33,67 @@
 
     <style>
         body {
+            /* 上半部的基礎漸層顏色 */
             background: radial-gradient(circle at center, hsl(30, 60%, 95%) 0%, hsl(30, 40%, 90%) 100%);
             min-height: 100vh;
+            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            overflow-x: hidden;
         }
+
+        /* 下半部 1/2 滿版背景圖 */
+        body::before {
+            content: "";
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50vh; /* 佔據螢幕一半高度 */
+            background-image: url('https://i.meee.com.tw/5f75udR.jpg'); /* 這裡換成你想要的背景圖網址 */
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+        }
+
+        /* 內容容器，需在背景圖之上 */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 標題與卡片的玻璃模糊效果 */
         .glass-card {
-            background-color: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(15px) saturate(180%);
-            -webkit-backdrop-filter: blur(15px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+            background-color: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        /* 標題專用的模糊背板（可選，讓標題更清晰） */
+        .title-glass {
+            padding: 1.5rem 3rem;
+            border-radius: 2rem;
+            background-color: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 3rem;
         }
     </style>
 </head>
 
 <body class="font-body text-text-primary">
-    <div class="w-full flex flex-col items-center p-4">
+    <div class="content-wrapper p-4">
         
-        <header class="mb-12 text-center">
+        <header class="title-glass text-center animate-fade-in">
             <h1 class="font-display text-4xl sm:text-6xl font-bold text-text-secondary drop-shadow-sm">
                 同人文小遊戲首頁
             </h1>
@@ -65,7 +106,7 @@
                 最初測試版
             </a>
 
-            <a href="test2.html"
+            <a href="吵架程式碼2.html"
                class="w-full sm:w-auto text-center bg-accent-button text-white font-body font-semibold py-4 px-10 rounded-full shadow-lg hover:bg-accent-button-hover hover:scale-105 transition-all duration-300 ease-in-out text-xl min-w-[200px]">
                 測試版二-深夜客房
             </a>
