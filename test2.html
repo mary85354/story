@@ -182,6 +182,27 @@
             }, 300);
         }
         renderStory('start');
-    </script>
+    <script>
+    (function() {
+        // 注意：這裡的網址最後面「沒有」up，所以純讀取，不計數
+        const apiUrl = "https://api.counterapi.dev/v1/faye_yoko_game_stats/visits";
+        const displayElement = document.getElementById('view-count');
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (displayElement) {
+                    displayElement.innerText = data.count;
+                }
+            })
+            .catch(error => {
+                console.error('讀取分頁人數出錯:', error);
+                if (displayElement) {
+                    displayElement.innerText = "讀取中";
+                }
+            });
+    })();
+</script> 
+    
 </body>
 </html>
