@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>首頁首頁</title>
+    <title>Faye & Yoko 故事集</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -95,40 +95,27 @@
     </div>
 
     <script>
-    (function() {
-        // 設定一個專屬於你的 ID
-        const theme = "asoul"; // 數字風格
-        const siteId = "mary85354-faye-yoko-game";
-        const displayElement = document.getElementById('view-count');
+        (function() {
+            // 回歸最初的 CounterAPI 設定
+            const apiUrl = "https://api.counterapi.dev/v1/faye_yoko_game_stats/visits/up";
+            const displayElement = document.getElementById('view-count');
 
-        // 1. 檢查管理員標籤
-        const isAdmin = localStorage.getItem('is_admin_faye_yoko');
-
-        // 2. 決定網址：管理員只「看」(get)，訪客執行「計數」(預設)
-        // 使用目前最穩定的官方展示伺服器
-        let apiUrl = `https://count.getloli.com/get/@${siteId}?theme=${theme}`;
-
-        // 這裡我們用一個更簡單的邏輯：大家都讀取同一個介面
-        fetch(apiUrl)
-            .then(res => res.json())
-            .then(data => {
-                // Moe-Counter 返回的是總數
-                if (displayElement) {
-                    displayElement.innerText = data.count;
-                }
-                
-                // 如果不是管理員，我們才發送計數請求 (此 API 呼叫一次 get 就會自動 +1)
-                // 為了避免管理員刷票，我們改用另一種方式
-                console.log("當前總人數：", data.count);
-            })
-            .catch(err => {
-                console.error("計數器連線失敗:", err);
-                if (displayElement) displayElement.innerText = "連線中";
-            });
-
-        console.log("排除自己請輸入：localStorage.setItem('is_admin_faye_yoko', 'true');");
-    })();
-</script>
+            // 執行計數並顯示
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (displayElement) {
+                        displayElement.innerText = data.count;
+                    }
+                })
+                .catch(error => {
+                    console.error('Counter Error:', error);
+                    if (displayElement) {
+                        displayElement.innerText = "連線中";
+                    }
+                });
+        })();
+    </script>
 
 </body>
 </html>
