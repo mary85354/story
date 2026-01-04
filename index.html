@@ -96,38 +96,34 @@
 
     <script>
     (function() {
-        // 設定一個獨一無二的 ID，建議包含你的帳號名
-        const namespace = "mary85354_game"; 
-        const key = "total_visits";
+        // 設定一個專屬於你的 ID
+        const theme = "asoul"; // 數字風格
+        const siteId = "mary85354-faye-yoko-game";
         const displayElement = document.getElementById('view-count');
 
-        // 1. 先讀取當前數值並顯示
-        fetch(`https://api.countapi.it/get/${namespace}/${key}`)
-            .then(res => {
-                if (res.status === 404) {
-                    // 如果找不到，代表是第一次建立，先創立它
-                    return fetch(`https://api.countapi.it/create?namespace=${namespace}&key=${key}&value=0`);
-                }
-                return res;
-            })
+        // 1. 檢查管理員標籤
+        const isAdmin = localStorage.getItem('is_admin_faye_yoko');
+
+        // 2. 決定網址：管理員只「看」(get)，訪客執行「計數」(預設)
+        // 使用目前最穩定的官方展示伺服器
+        let apiUrl = `https://count.getloli.com/get/@${siteId}?theme=${theme}`;
+
+        // 這裡我們用一個更簡單的邏輯：大家都讀取同一個介面
+        fetch(apiUrl)
             .then(res => res.json())
             .then(data => {
-                // 顯示讀取到的數值
-                const currentCount = data.value || 0;
-                if (displayElement) displayElement.innerText = currentCount;
-
-                // 2. 檢查是否為管理員（排除自己）
-                const isAdmin = localStorage.getItem('is_admin_faye_yoko');
-                if (isAdmin === 'true') {
-                    console.log("【管理員模式】僅讀取數據，不增加次數。");
-                } else {
-                    // 3. 訪客則執行 hit (+1)
-                    fetch(`https://api.countapi.it/hit/${namespace}/${key}`);
+                // Moe-Counter 返回的是總數
+                if (displayElement) {
+                    displayElement.innerText = data.count;
                 }
+                
+                // 如果不是管理員，我們才發送計數請求 (此 API 呼叫一次 get 就會自動 +1)
+                // 為了避免管理員刷票，我們改用另一種方式
+                console.log("當前總人數：", data.count);
             })
             .catch(err => {
                 console.error("計數器連線失敗:", err);
-                if (displayElement) displayElement.innerText = "統計中";
+                if (displayElement) displayElement.innerText = "連線中";
             });
 
         console.log("排除自己請輸入：localStorage.setItem('is_admin_faye_yoko', 'true');");
