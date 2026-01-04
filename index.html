@@ -37,11 +37,10 @@
             padding: 0;
             height: 100%;
             width: 100%;
-            overflow: hidden; /* 防止出現滾動條 */
+            overflow: hidden; 
             background-color: hsl(30, 40%, 95%);
         }
 
-        /* 整個頁面容器 */
         .container-box {
             display: flex;
             flex-direction: column;
@@ -49,9 +48,8 @@
             width: 100%;
         }
 
-        /* 上半部：UI 與 標題區塊 */
         .top-half {
-            height: 50vh; /* 固定佔一半高度 */
+            height: 50vh; 
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -60,9 +58,8 @@
             z-index: 10;
         }
 
-        /* 下半部：純背景圖片區塊 */
         .bottom-half {
-            height: 50vh; /* 固定佔一半高度 */
+            height: 50vh; 
             width: 100%;
             background-image: url('https://i.meee.com.tw/dQ7O9XR.jpg');
             background-size: cover;
@@ -70,7 +67,6 @@
             position: relative;
         }
 
-        /* 標題與按鈕區塊的玻璃效果 */
         .glass-container {
             background-color: rgba(255, 255, 255, 0.45);
             backdrop-filter: blur(15px) saturate(160%);
@@ -85,10 +81,18 @@
             gap: 1.5rem;
         }
 
-        /* 標題樣式調整，確保不會太大擠出去 */
         .main-title {
             margin-bottom: 0.5rem;
             text-align: center;
+        }
+
+        /* 新增：人數統計樣式 */
+        .stat-badge {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: hsl(20, 10%, 50%);
+            letter-spacing: 0.05em;
+            opacity: 0.8;
         }
     </style>
 </head>
@@ -116,13 +120,38 @@
                         測試版二-深夜客房
                     </a>
                 </main>
+
+                <div class="stat-badge">
+                    目前累積進場人數：<span id="view-count" class="font-bold">...</span>
+                </div>
             </div>
         </section>
 
         <section class="bottom-half">
-            </section>
-
+        </section>
     </div>
+
+    <script>
+        (function() {
+            // 使用你在截圖中已經「被佔用」的那個名稱
+            const namespace = "faye_yoko_game_stats"; 
+            const key = "visits";
+            const displayElement = document.getElementById('view-count');
+
+            // 首頁邏輯：使用 /up 增加次數並顯示數字
+            fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`)
+                .then(response => response.json())
+                .then(data => {
+                    if (displayElement) {
+                        displayElement.innerText = data.count;
+                    }
+                })
+                .catch(error => {
+                    console.error('Counter error:', error);
+                    if (displayElement) displayElement.innerText = "讀取失敗";
+                });
+        })();
+    </script>
 
 </body>
 </html>
