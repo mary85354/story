@@ -107,14 +107,14 @@
             if (isAdmin === 'true') {
                 console.log("【系統訊息】偵測為管理員模式，瀏覽次數不列入計算。");
                 // 僅讀取（GET），不增加
-                fetch(`https://api.counterapi.dev/v1/${namespace}/${key}`)
+                fetch(`https://api.counterapi.dev/v1/faye_yoko_game_stats/visits`)
                     .then(res => res.json())
                     .then(data => {
                         if (displayElement) displayElement.innerText = data.count;
                     });
             } else {
                 // 訪客模式：增加次數（/up）
-                fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`)
+                fetch(`https://api.counterapi.dev/v1/faye_yoko_game_stats/visits`)
                     .then(res => res.json())
                     .then(data => {
                         if (displayElement) displayElement.innerText = data.count;
