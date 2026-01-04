@@ -96,34 +96,37 @@
 
     <script>
     (function() {
-        // 設定你的專屬 ID (建議用你的 github 帳號+專案名，確保唯一)
-        const siteId = "mary85354_faye_yoko_game"; 
+        // 設定一個獨一無二的 ID，建議包含你的帳號名
+        const namespace = "mary85354_game"; 
+        const key = "total_visits";
         const displayElement = document.getElementById('view-count');
 
-        // 1. 讀取目前的數字 (使用另一個更穩定的服務)
-        // 這個 API 專門為 GitHub Pages 設計，不會有 CORS 錯誤
-        fetch(`https://api.countapi.xyz/get/${siteId}/visits`)
+        // 1. 先讀取當前數值並顯示
+        fetch(`https://api.countapi.it/get/${namespace}/${key}`)
             .then(res => {
-                if (!res.ok) {
-                    // 如果還沒建立過，就先初始化
-                    return fetch(`https://api.countapi.xyz/create?namespace=${siteId}&key=visits&value=0`).then(r => r.json());
+                if (res.status === 404) {
+                    // 如果找不到，代表是第一次建立，先創立它
+                    return fetch(`https://api.countapi.it/create?namespace=${namespace}&key=${key}&value=0`);
                 }
-                return res.json();
+                return res;
             })
+            .then(res => res.json())
             .then(data => {
-                if (displayElement) displayElement.innerText = data.value;
+                // 顯示讀取到的數值
+                const currentCount = data.value || 0;
+                if (displayElement) displayElement.innerText = currentCount;
 
-                // 2. 檢查管理員排除
+                // 2. 檢查是否為管理員（排除自己）
                 const isAdmin = localStorage.getItem('is_admin_faye_yoko');
-                if (isAdmin !== 'true') {
-                    // 訪客才加 1
-                    fetch(`https://api.countapi.xyz/hit/${siteId}/visits`);
+                if (isAdmin === 'true') {
+                    console.log("【管理員模式】僅讀取數據，不增加次數。");
                 } else {
-                    console.log("【管理員模式】已識別，不計入次數。");
+                    // 3. 訪客則執行 hit (+1)
+                    fetch(`https://api.countapi.it/hit/${namespace}/${key}`);
                 }
             })
             .catch(err => {
-                console.error("計數器連線失敗", err);
+                console.error("計數器連線失敗:", err);
                 if (displayElement) displayElement.innerText = "統計中";
             });
 
