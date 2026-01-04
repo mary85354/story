@@ -95,38 +95,37 @@
     </div>
 
     <script>
-        (function() {
-            const namespace = "faye_yoko_game_stats"; 
-            const key = "visits";
-            const displayElement = document.getElementById('view-count');
+    (function() {
+        const namespace = "faye_yoko_game_stats"; 
+        const key = "visits";
+        const displayElement = document.getElementById('view-count');
 
-            // 檢查管理員標籤
-            const isAdmin = localStorage.getItem('is_admin_faye_yoko');
+        // 1. 無論如何，先讀取並顯示目前的數字 (所有人都看得到)
+        fetch(`https://api.counterapi.dev/v1/${namespace}/${key}`)
+            .then(res => res.json())
+            .then(data => {
+                if (displayElement) displayElement.innerText = data.count;
+            })
+            .catch(() => {
+                if (displayElement) displayElement.innerText = "讀取中";
+            });
 
-            // 決定要用增加(/up)還是純讀取(GET)
-            const apiUrl = isAdmin === 'true' 
-                ? `https://api.counterapi.dev/v1/${namespace}/${key}`
-                : `https://api.counterapi.dev/v1/${namespace}/${key}/up`;
+        // 2. 檢查管理員標籤
+        const isAdmin = localStorage.getItem('is_admin_faye_yoko');
 
-            if (isAdmin === 'true') console.log("管理員模式：僅監看數字。");
+        if (isAdmin === 'true') {
+            // 如果是管理員，只在控制台留個紀錄，不做任何加號動作
+            console.log("【管理員模式】已識別：僅查看數字，不計入點擊次數。");
+        } else {
+            // 3. 如果是普通訪客，偷偷發送一個 /up 指令叫 API +1
+            // 這裡不更新 UI，避免數字跳動，單純完成計數任務
+            fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`)
+                .catch(err => console.error("計數失敗", err));
+        }
 
-            fetch(apiUrl)
-                .then(res => {
-                    if (!res.ok) throw new Error('API 找不到計數器');
-                    return res.json();
-                })
-                .then(data => {
-                    if (displayElement) displayElement.innerText = data.count;
-                })
-                .catch(err => {
-                    console.error(err);
-                    if (displayElement) displayElement.innerText = "尚未啟動";
-                });
-            
-            // 提示如何開啟管理員模式 (這行要在括號裡面)
-            console.log("欲排除自己的瀏覽次數？請在 Console 輸入：localStorage.setItem('is_admin_faye_yoko', 'true'); 然後重新整理。");
-        })();
-    </script>
+        console.log("欲排除自己的瀏覽次數？請在 Console 輸入：localStorage.setItem('is_admin_faye_yoko', 'true'); 然後重新整理。");
+    })();
+</script>
 
 </body>
 </html>
