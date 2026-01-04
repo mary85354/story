@@ -96,32 +96,33 @@
 
     <script>
         (function() {
-            const namespace = "faye_yoko_game_stats"; 
-            const key = "visits";
-            const displayElement = document.getElementById('view-count');
+    const namespace = "faye_yoko_game_stats"; 
+    const key = "visits";
+    const displayElement = document.getElementById('view-count');
 
-            // --- 排除管理員機制 ---
-            // 檢查本地儲存是否含有管理員標記
-            const isAdmin = localStorage.getItem('is_admin_faye_yoko');
+    // 檢查管理員標籤
+    const isAdmin = localStorage.getItem('is_admin_faye_yoko');
 
-            if (isAdmin === 'true') {
-                console.log("【系統訊息】偵測為管理員模式，瀏覽次數不列入計算。");
-                // 僅讀取（GET），不增加
-                fetch(`https://api.counterapi.dev/v1/faye_yoko_game_stats/visits`)
-                    .then(res => res.json())
-                    .then(data => {
-                        if (displayElement) displayElement.innerText = data.count;
-                    });
-            } else {
-                // 訪客模式：增加次數（/up）
-                fetch(`https://api.counterapi.dev/v1/faye_yoko_game_stats/visits`)
-                    .then(res => res.json())
-                    .then(data => {
-                        if (displayElement) displayElement.innerText = data.count;
-                    })
-                    .catch(() => {
-                        if (displayElement) displayElement.innerText = "連線失敗";
-                    });
+    // 決定要用增加(/up)還是純讀取(GET)
+    const apiUrl = isAdmin === 'true' 
+        ? `https://api.counterapi.dev/v1/${namespace}/${key}`
+        : `https://api.counterapi.dev/v1/${namespace}/${key}/up`;
+
+    if (isAdmin === 'true') console.log("管理員模式：僅監看數字。");
+
+    fetch(apiUrl)
+        .then(res => {
+            if (!res.ok) throw new Error('API 找不到計數器');
+            return res.json();
+        })
+        .then(data => {
+            if (displayElement) displayElement.innerText = data.count;
+        })
+        .catch(err => {
+            console.error(err);
+            if (displayElement) displayElement.innerText = "尚未啟動";
+        });
+})();
             }
 
             // 提示如何開啟管理員模式
