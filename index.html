@@ -33,79 +33,43 @@
 
     <style>
         body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
+            margin: 0; padding: 0;
+            height: 100%; width: 100%;
             overflow: hidden; 
             background-color: hsl(30, 40%, 95%);
         }
-
-        .container-box {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            width: 100%;
-        }
-
+        .container-box { display: flex; flex-direction: column; height: 100vh; width: 100%; }
         .top-half {
-            height: 50vh; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            z-index: 10;
+            height: 50vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 2rem; z-index: 10;
         }
-
         .bottom-half {
-            height: 50vh; 
-            width: 100%;
+            height: 50vh; width: 100%;
             background-image: url('https://i.meee.com.tw/dQ7O9XR.jpg');
-            background-size: cover;
-            background-position: center;
-            position: relative;
+            background-size: cover; background-position: center; position: relative;
         }
-
         .glass-container {
             background-color: rgba(255, 255, 255, 0.45);
             backdrop-filter: blur(15px) saturate(160%);
             -webkit-backdrop-filter: blur(15px) saturate(160%);
             border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
-            padding: 2rem;
-            border-radius: 2.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
+            padding: 2rem; border-radius: 2.5rem;
+            display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
         }
-
-        .main-title {
-            margin-bottom: 0.5rem;
-            text-align: center;
-        }
-
-        /* 新增：人數統計樣式 */
-        .stat-badge {
-            margin-top: 1rem;
-            font-size: 0.85rem;
-            color: hsl(20, 10%, 50%);
-            letter-spacing: 0.05em;
-            opacity: 0.8;
-        }
+        .main-title { margin-bottom: 0.5rem; text-align: center; }
+        .stat-badge { margin-top: 1rem; font-size: 0.85rem; color: hsl(20, 10%, 50%); letter-spacing: 0.05em; opacity: 0.8; }
     </style>
 </head>
 
 <body class="font-body text-text-primary">
 
     <div class="container-box">
-        
         <section class="top-half">
             <div class="glass-container w-full max-w-2xl">
                 <header class="main-title">
                     <h1 class="font-display text-3xl sm:text-5xl font-bold text-text-secondary drop-shadow-sm">
-                        同人文小遊戲首頁
+                        Faye & Yoko 故事集
                     </h1>
                 </header>
 
@@ -117,39 +81,51 @@
 
                     <a href="test2.html"
                        class="w-full sm:w-auto text-center bg-accent-button text-white font-body font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-accent-button-hover hover:scale-105 transition-all duration-300 ease-in-out text-lg min-w-[180px]">
-                        測試版二-深夜客房
+                        深夜客房
                     </a>
                 </main>
 
                 <div class="stat-badge">
-                    目前累積進場人數：<span id="view-count" class="font-bold">...</span>
+                    目前累積進場人數：<span id="view-count" class="font-bold">讀取中</span>
                 </div>
             </div>
         </section>
 
-        <section class="bottom-half">
-        </section>
+        <section class="bottom-half"></section>
     </div>
 
     <script>
         (function() {
-            // 使用你在截圖中已經「被佔用」的那個名稱
             const namespace = "faye_yoko_game_stats"; 
             const key = "visits";
             const displayElement = document.getElementById('view-count');
 
-            // 首頁邏輯：使用 /up 增加次數並顯示數字
-            fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`)
-                .then(response => response.json())
-                .then(data => {
-                    if (displayElement) {
-                        displayElement.innerText = data.count;
-                    }
-                })
-                .catch(error => {
-                    console.error('Counter error:', error);
-                    if (displayElement) displayElement.innerText = "讀取失敗";
-                });
+            // --- 排除管理員機制 ---
+            // 檢查本地儲存是否含有管理員標記
+            const isAdmin = localStorage.getItem('is_admin_faye_yoko');
+
+            if (isAdmin === 'true') {
+                console.log("【系統訊息】偵測為管理員模式，瀏覽次數不列入計算。");
+                // 僅讀取（GET），不增加
+                fetch(`https://api.counterapi.dev/v1/${namespace}/${key}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (displayElement) displayElement.innerText = data.count;
+                    });
+            } else {
+                // 訪客模式：增加次數（/up）
+                fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (displayElement) displayElement.innerText = data.count;
+                    })
+                    .catch(() => {
+                        if (displayElement) displayElement.innerText = "連線失敗";
+                    });
+            }
+
+            // 提示如何開啟管理員模式
+            console.log("欲排除自己的瀏覽次數？請在 Console 輸入：localStorage.setItem('is_admin_faye_yoko', 'true'); 然後重新整理。");
         })();
     </script>
 
