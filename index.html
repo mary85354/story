@@ -96,34 +96,38 @@
 
     <script>
     (function() {
-        const namespace = "faye_yoko_game_stats"; 
-        const key = "visits";
+        // 設定你的專屬 ID (建議用你的 github 帳號+專案名，確保唯一)
+        const siteId = "mary85354_faye_yoko_game"; 
         const displayElement = document.getElementById('view-count');
 
-        // 1. 無論如何，先讀取並顯示目前的數字 (所有人都看得到)
-        fetch(`https://api.counterapi.dev/v1/${namespace}/${key}`)
-            .then(res => res.json())
-            .then(data => {
-                if (displayElement) displayElement.innerText = data.count;
+        // 1. 讀取目前的數字 (使用另一個更穩定的服務)
+        // 這個 API 專門為 GitHub Pages 設計，不會有 CORS 錯誤
+        fetch(`https://api.countapi.xyz/get/${siteId}/visits`)
+            .then(res => {
+                if (!res.ok) {
+                    // 如果還沒建立過，就先初始化
+                    return fetch(`https://api.countapi.xyz/create?namespace=${siteId}&key=visits&value=0`).then(r => r.json());
+                }
+                return res.json();
             })
-            .catch(() => {
-                if (displayElement) displayElement.innerText = "讀取中";
+            .then(data => {
+                if (displayElement) displayElement.innerText = data.value;
+
+                // 2. 檢查管理員排除
+                const isAdmin = localStorage.getItem('is_admin_faye_yoko');
+                if (isAdmin !== 'true') {
+                    // 訪客才加 1
+                    fetch(`https://api.countapi.xyz/hit/${siteId}/visits`);
+                } else {
+                    console.log("【管理員模式】已識別，不計入次數。");
+                }
+            })
+            .catch(err => {
+                console.error("計數器連線失敗", err);
+                if (displayElement) displayElement.innerText = "統計中";
             });
 
-        // 2. 檢查管理員標籤
-        const isAdmin = localStorage.getItem('is_admin_faye_yoko');
-
-        if (isAdmin === 'true') {
-            // 如果是管理員，只在控制台留個紀錄，不做任何加號動作
-            console.log("【管理員模式】已識別：僅查看數字，不計入點擊次數。");
-        } else {
-            // 3. 如果是普通訪客，偷偷發送一個 /up 指令叫 API +1
-            // 這裡不更新 UI，避免數字跳動，單純完成計數任務
-            fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`)
-                .catch(err => console.error("計數失敗", err));
-        }
-
-        console.log("欲排除自己的瀏覽次數？請在 Console 輸入：localStorage.setItem('is_admin_faye_yoko', 'true'); 然後重新整理。");
+        console.log("排除自己請輸入：localStorage.setItem('is_admin_faye_yoko', 'true');");
     })();
 </script>
 
