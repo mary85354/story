@@ -37,7 +37,6 @@
         .side-bg-right { right: 0; background-image: url('https://i.meee.com.tw/5f75udR.jpg'); border-left: 1px solid rgba(255, 255, 255, 0.2); }
         @media (max-width: 1024px) { .side-bg { display: none !important; } }
         
-        /* 確保內容撐開，讓 footer 留在底部 */
         .page-wrapper { 
             display: flex; 
             flex-direction: column; 
@@ -82,33 +81,31 @@
 
         <footer class="footer-stats">
             <div class="max-w-xs mx-auto border-t border-gray-300/30 pt-2">
-                <p>本站總瀏覽次數：<span id="view-count" class="font-bold">...</span></p>
+                <p>目前累積進場人數：<span id="view-count" class="font-bold">讀取中</span></p>
+                <a href="index.html" class="inline-block mt-2 underline opacity-60 hover:opacity-100 transition-opacity">返回首頁</a>
             </div>
         </footer>
     </div>
 
     <script>
-        // --- 全域計數器邏輯 (首頁一載入就執行) ---
-        const namespace = "faye_yoko_live_stats"; // 您可以改成您在 Dashboard 設定的 Slug
-        const key = "total_visits";
-
-        function updateVisitorCount() {
+        // --- 唯讀計數器邏輯 (連動 index) ---
+        (function() {
+            const namespace = "faye_yoko_game_stats"; 
+            const key = "visits";
             const display = document.getElementById('view-count');
-            // 使用 /up 指令：每次載入網頁自動 +1 並回傳結果
-            fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`)
+
+            // 僅獲取數據 (GET)，不使用 /up
+            fetch(`https://api.counterapi.dev/v1/${namespace}/${key}`)
                 .then(res => res.json())
                 .then(data => {
-                    display.innerText = data.count;
+                    if(display) display.innerText = data.count;
                 })
                 .catch(() => {
-                    display.innerText = "連線中";
+                    if(display) display.innerText = "無法載入";
                 });
-        }
+        })();
 
-        // 立即執行計數
-        updateVisitorCount();
-
-        // --- 故事引擎 (這部分維持原樣，確保遊戲正常運作) ---
+        // --- 故事引擎 ---
         const storyData = {
             "start": {
                 text: "下班後的爭吵讓屋子裡的空氣凝結著冰冷的尷尬。Yoko賭氣地抱著枕頭，將自己關進了另一間客房，留下Faye獨自一人面對空蕩的雙人床。<br><br>Faye的心頭沉甸甸的，翻來覆去也睡不著。另一邊，客房裡的Yoko也並不安穩，少了身邊熟悉的體溫和Faye的輕柔擁抱，她感到一股難以言喻的空虛。習慣性的，她的手不自覺地滑向自己的肌膚，試圖尋找一絲慰藉。<br><br>接下來 Faye 該怎麼做？",
@@ -125,11 +122,10 @@
                     { text: "從背後輕輕抱住她", next: "path_hug_back" }
                 ]
             },
-            // ... (其他劇情資料略，請延用您手邊的完整文本)
-            "path_sit_bed": { text: "妳們坐在床邊和好了。", choices: [{ text: "重回標題", next: "start" }] },
-            "path_hug_back": { text: "妳們在溫暖的擁抱中入睡。", choices: [{ text: "重回標題", next: "start" }] },
-            "path_listen": { text: "妳在門外聽到了不該聽的，Yoko生氣了。", choices: [{ text: "重回標題", next: "start" }] },
-            "path_enter": { text: "妳直接進門，氣氛變得曖昧。", choices: [{ text: "重回標題", next: "start" }] }
+            "path_sit_bed": { text: "妳們坐在床邊，交換了彼此的心聲，和好了。", choices: [{ text: "重回標題", next: "start" }] },
+            "path_hug_back": { text: "妳從背後抱住她，所有的委屈都在這一刻煙消雲散。", choices: [{ text: "重回標題", next: "start" }] },
+            "path_listen": { text: "妳在門外聽到了不該聽的，這讓 Yoko 感到十分尷尬與憤怒。", choices: [{ text: "重回標題", next: "start" }] },
+            "path_enter": { text: "妳直接進門，打破了沈默，氣氛頓時變得有些曖昧。", choices: [{ text: "重回標題", next: "start" }] }
         };
 
         let historyStack = [];
@@ -164,7 +160,7 @@
                 if (historyStack.length > 0) {
                     const backBtn = document.createElement('button');
                     backBtn.textContent = "⬅ 回上一步";
-                    backBtn.className = "text-gray-500 text-sm underline mt-4";
+                    backBtn.className = "text-gray-500 text-sm underline mt-4 cursor-pointer hover:text-accent-button";
                     backBtn.onclick = () => renderStory(historyStack.pop(), true);
                     navElement.appendChild(backBtn);
                 }
