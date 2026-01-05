@@ -1,4 +1,110 @@
-<script>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faye & Yoko 故事集</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg-soft': 'hsl(30, 40%, 97%)',
+                        'text-primary': 'hsl(28, 20%, 30%)',
+                        'text-secondary': 'hsl(20, 10%, 45%)',
+                        'accent-button': 'hsl(30, 40%, 60%)',
+                        'accent-button-hover': 'hsl(30, 40%, 50%)',
+                    },
+                    fontFamily: {
+                        display: ['Lora', 'serif'],
+                        body: ['Outfit', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body, html {
+            margin: 0; padding: 0;
+            height: 100%; width: 100%;
+            overflow: hidden; 
+            background-color: hsl(30, 40%, 95%);
+        }
+        .container-box { display: flex; flex-direction: column; height: 100vh; width: 100%; }
+        .top-half {
+            height: 50vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 2rem; z-index: 10;
+        }
+        .bottom-half {
+            height: 50vh; width: 100%;
+            background-image: url('https://i.meee.com.tw/dQ7O9XR.jpg');
+            background-size: cover; background-position: center; position: relative;
+        }
+        .glass-container {
+            background-color: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(15px) saturate(160%);
+            -webkit-backdrop-filter: blur(15px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+            padding: 2rem; border-radius: 2.5rem;
+            display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+        }
+        .main-title { margin-bottom: 0.5rem; text-align: center; }
+        .stat-badge { margin-top: 1rem; font-size: 0.85rem; color: hsl(20, 10%, 50%); letter-spacing: 0.05em; opacity: 0.8; }
+        .small-note { font-size: 0.75rem; color: hsl(20,10%,45%); }
+    </style>
+</head>
+
+<body class="font-body text-text-primary">
+
+    <div class="container-box">
+        <section class="top-half">
+            <div class="glass-container w-full max-w-2xl">
+                <header class="main-title">
+                    <h1 class="font-display text-3xl sm:text-5xl font-bold text-text-secondary drop-shadow-sm">
+                        Faye & Yoko 故事集
+                    </h1>
+                </header>
+
+                <main class="flex flex-col sm:flex-row justify-center items-center gap-4 w-full">
+                    <a href="test1.html"
+                       class="w-full sm:w-auto text-center bg-accent-button text-white font-body font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-accent-button-hover hover:scale-105 transition-transform duration-200">
+                        最初測試版
+                    </a>
+
+                    <a href="test2.html"
+                       class="w-full sm:w-auto text-center bg-accent-button text-white font-body font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-accent-button-hover hover:scale-105 transition-transform duration-200">
+                        深夜客房
+                    </a>
+                </main>
+
+                <div class="stat-badge">
+                    目前累積進場人數：<span id="view-count" class="font-bold">讀取中</span>
+                </div>
+
+                <div class="small-note mt-2">
+                    （本站會記錄每個瀏覽器是否已被計數；已計數的瀏覽器不會再次增加總數）
+                </div>
+
+                <div id="admin-controls" class="mt-4" style="display:none;">
+                    <button id="reset-btn" class="bg-white text-text-primary border border-gray-200 px-3 py-2 rounded-md shadow-sm">重置計數（管理）</button>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="bottom-half"></section>
+    </div>
+
+  <script>
 (function() {
     // 使用 localStorage 排除同一瀏覽器重複計數
     // 改用新的計數 id（請確認與您目前使用的一致）
@@ -144,3 +250,6 @@
     init();
 })();
 </script>
+
+</body>
+</html>
