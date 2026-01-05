@@ -18,6 +18,7 @@
                         'text-secondary': 'hsl(20, 15%, 35%)', 
                         'accent-button': 'hsl(30, 30%, 60%)', 
                         'accent-button-hover': 'hsl(30, 30%, 45%)', 
+                        'back-button': 'hsl(20, 10%, 50%)',
                     },
                     fontFamily: {
                         display: ['Lora', 'serif'], 
@@ -28,40 +29,49 @@
         }
     </script>
     <style>
-        body { background: radial-gradient(circle at center, hsl(30, 60%, 95%) 0%, hsl(30, 40%, 90%) 100%); min-height: 100vh; margin: 0; }
+        body {
+            background: radial-gradient(circle at center, hsl(30, 60%, 95%) 0%, hsl(30, 40%, 90%) 100%);
+            min-height: 100vh; margin: 0; overflow-x: hidden;
+        }
         .side-bg { position: fixed; top: 0; width: 33.333333%; height: 100vh; background-size: cover; background-position: center; z-index: 0; }
         .side-bg-left { left: 0; background-image: url('https://i.meee.com.tw/368EWT3.jpg'); border-right: 1px solid rgba(255, 255, 255, 0.2); }
         .side-bg-right { right: 0; background-image: url('https://i.meee.com.tw/5f75udR.jpg'); border-left: 1px solid rgba(255, 255, 255, 0.2); }
         @media (max-width: 1024px) { .side-bg { display: none !important; } }
         .page-wrapper { display: flex; flex-direction: column; min-height: 100vh; width: 100%; position: relative; z-index: 10; }
-        .main-content { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem; }
-        .glass-card { background-color: rgba(255, 255, 255, 0.45); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.4); }
-        .footer-stats { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: hsl(20, 15%, 45%); background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px); width: 100%; }
+        .header-area { width: 100%; padding-top: 2rem; text-align: center; }
+        .main-content-center-box { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+        .glass-card { background-color: rgba(255, 255, 255, 0.45); backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 12px 40px 0 rgba(40, 30, 20, 0.1); }
+        .story-p { margin-bottom: 1.5rem; text-indent: 2rem; }
+        .story-p:first-of-type { text-indent: 0; font-weight: 500; }
         .bad-end { color: #991b1b; font-weight: bold; padding-top: 1rem; margin-top: 2rem; border-top: 1px solid #991b1b44; }
         .happy-end-text { color: #c2410c; font-weight: bold; padding-top: 1rem; margin-top: 2rem; }
         .good-end-text { color: #15803d; font-weight: bold; padding-top: 1rem; margin-top: 2rem; }
+        .footer-stats { text-align: center; padding: 2rem 0; font-size: 0.875rem; color: hsl(20, 15%, 50%); opacity: 0.7; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: hsl(30, 30%, 80%); border-radius: 10px; }
     </style>
 </head>
-<body class="font-body text-text-primary">
+<body class="font-body text-text-primary overflow-y-auto">
     <div class="side-bg side-bg-left"></div>
     <div class="side-bg side-bg-right"></div>
     <div class="page-wrapper">
-        <header class="pt-10 text-center">
-            <h1 class="font-display text-5xl font-bold text-text-secondary drop-shadow-sm">Faye & Yoko</h1>
-            <p class="text-lg opacity-80 italic mt-2">— 深夜客房 —</p>
+        <header class="header-area animate-fade-in">
+            <h1 id="game-title" class="font-display text-4xl sm:text-5xl font-bold text-text-secondary drop-shadow-sm">Faye & Yoko</h1>
+            <p class="font-body text-lg text-text-primary mt-2 opacity-80 italic">— 深夜客房 —</p>
         </header>
-        <div class="main-content">
-            <main class="w-full max-w-4xl glass-card rounded-3xl p-8 sm:p-12 shadow-xl">
-                <section id="story-text" class="text-xl leading-relaxed mb-8 transition-opacity duration-500 opacity-100"></section>
-                <div id="action-area" class="flex flex-col items-center gap-4">
-                    <section id="choices" class="flex flex-wrap justify-center gap-4 w-full"></section>
-                    <section id="navigation" class="mt-4"></section>
+        <div class="main-content-center-box">
+            <main class="w-full max-w-4xl glass-card rounded-3xl p-6 sm:p-10 border-t border-l border-white/60">
+                <section id="story-text" class="text-lg sm:text-xl leading-relaxed text-text-primary transition-opacity duration-500 opacity-100"></section>
+                <div id="action-area" class="mt-10 flex flex-col items-center gap-4 transition-opacity duration-500 opacity-100">
+                    <section id="choices" class="flex flex-col sm:flex-row flex-wrap justify-center gap-4 w-full"></section>
+                    <section id="navigation" class="w-full flex justify-center"></section>
                 </div>
             </main>
         </div>
+        
         <footer class="footer-stats">
+            <!-- 顯著的大按鈕返回首頁（已移除計數顯示） -->
             <div class="max-w-xs mx-auto border-t border-gray-300/30 pt-4">
-                <!-- 顯著的大按鈕返回首頁 -->
                 <a href="index.html" class="inline-block w-full text-center mt-2 bg-accent-button text-white font-body font-semibold py-4 px-6 rounded-full shadow-lg hover:bg-accent-button-hover hover:scale-105 transition-transform duration-200">
                     返回首頁
                 </a>
@@ -70,10 +80,10 @@
     </div>
 
     <script>
-        // --- 劇情資料庫 ---
+        // --- 故事資料（已補回完整繁體中文） ---
         const storyData = {
             "start": {
-                text: "下班後的爭吵讓屋子裡的空氣凝結著冰冷的尷尬。Yoko賭氣地抱著枕頭，將自己關進了另一間客房，留下Faye獨自一人面對空蕩的雙人床�[...]",
+                text: "下班後的爭吵讓屋子裡的空氣凝結著冰冷的尷尬。Yoko賭氣地抱著枕頭，將自己關進了另一間客房，留下Faye獨自一人面對空蕩的雙人床。<br><br>Faye的心頭沉甸甸的，翻來覆去也睡不著。另一邊，客房裡的Yoko也並不安穩，少了身邊熟悉的體溫和Faye的輕柔擁抱，她感到一股難以言喻的空虛。習慣性的，她的手不自覺地滑向自己的肌膚，試圖尋找一絲慰藉。<br><br>微弱的呻吟聲不經意地從她口中溢出，在這靜謐的夜裡顯得格外清晰，清晰到，隔壁房的Faye也能聽得一清二楚。Faye的心臟猛地一跳，她輕手輕腳地下了床，摸黑靠近了客房門。黑暗中，Faye的手放在門把上，正猶豫著行動。Yoko絲毫沒有注意到Faye的靠近。<br><br>接下來 Faye 該怎麼做？",
                 choices: [
                     { text: "敲門，輕聲呼喚", next: "path_knock" },
                     { text: "在門外偷聽", next: "path_listen" },
@@ -81,7 +91,7 @@
                 ]
             },
             "path_knock": {
-                text: "Faye站在客房門外，輕輕敲了三下。「Yoko……妳睡了嗎？」<br><br>房內的動作瞬間停了。過了幾秒，Yoko努力讓語氣聽起來平靜，卻還是�[...]",
+                text: "Faye站在客房門外，深吸了一口氣。她抬起手，輕輕在門板上敲了三下。<br><br>「Yoko……妳睡了嗎？」<br><br>房內的動作瞬間停了。Yoko原本急促的呼吸聲戛而止，取而代之的是短暫的沉默。她拉起被子蓋住自己微微發燙的身體，心跳得厲害——剛才的聲音，Faye聽見了多少？<br><br>過了幾秒，Yoko清了清嗓子，努力讓語氣聽起來平靜，卻還是藏不住那點慌亂：「……還沒。怎麼了？」<br><br>門被緩緩拉開一條縫。Faye探頭進來望了望，只見Yoko露出一張被夜燈映得微紅的臉。<br><br>「我想跟妳談談……。」Faye小心翼翼的詢問，深怕Yoko更加憤怒。<br><br>「……進來吧。」她小聲說完，轉身走回床邊背對著Faye坐下。房間裡的空氣仍帶著剛才殘留的曖昧氣息，讓Faye的心跳又漏了一拍。<br><br>Faye下一步的動作是？",
                 choices: [
                     { text: "坐在床邊安撫她", next: "path_sit_bed" },
                     { text: "從背後輕輕抱住她", next: "path_hug_back" },
@@ -89,7 +99,7 @@
                 ]
             },
             "path_hug_back": {
-                text: "Faye繞到床的另一側，從背後輕輕環住Yoko的腰。掌心貼上她睡袍下微熱的腹部。<br><br>「還在生氣嗎？」Faye低低的聲音貼在她耳邊，「�[...]",
+                text: "Faye輕手輕腳地繞到床的另一側，從背後輕輕環住Yoko的腰。掌心貼上她睡袍下微微發熱的腹部。Faye把下巴輕輕擱在她肩上，鼻尖蹭過她耳後細軟的髮絲。<br><br>「還在生氣嗎？」Faye的聲音低低的，貼在她耳邊，「我都主動投降了，寶貝還要我怎麼辦才肯原諒我？」<br><br>Yoko嘴上說著「誰要你抱」，身體卻不自覺地往後靠，讓背脊貼上Faye的胸口。Faye故意鬆了鬆手臂，又立刻收緊，「嗯？抓著我不放的是誰呀？」<br><br>Yoko最終只是輕哼了一聲，把臉埋進Faye的頸窩，小聲地嘀咕：「……壞蛋。」",
                 choices: [
                     { text: "調皮地戲弄她", next: "path_hug_neck_kiss" },
                     { text: "靜靜地聽對方的話", next: "path_hug_face_to_face" },
@@ -97,19 +107,19 @@
                 ]
             },
             "path_hug_neck_kiss": {
-                text: "Faye故意用鼻尖蹭她的脖子，逗她笑，問她：「要不要我幫妳……把剛才沒做完的事做完？」那片敏感的肌膚立刻起了一層細小的雞皮��[...]",
+                text: "Faye故意用鼻尖蹭她的脖子，逗她笑，問她：「要不要我幫妳……把剛才沒做完的事做完？」那片敏感的肌膚立刻起了一層細小的雞皮疙瘩。<br><br>Faye從後面抱著Yoko，感受她逐漸放軟的身體。她微微側頭，唇瓣若有似無地刷過Yoko的耳廓，然後輕輕含住那顆小巧的耳垂。Yoko倒抽一口氣，Faye趁勢將她整個人轉過來，讓Yoko面對自己坐在床上。<br><br>那個吻起初只是輕輕一碰。Yoko終於主動迎上去，雙臂環住Faye的脖子，讓這個吻慢慢加深。好一會兒，Faye才意猶未盡地退開一些，一隻手順勢滑到Yoko的胸前，隔著薄薄的睡袍布料，輕輕揉捏那已經挺立的柔軟。<br><br>「還在生氣嗎？」Faye的聲音啞得厲害。Yoko紅著臉搖頭，聲音細如蚊鳴：「……不氣了。」<br><br><div class='happy-end-text'>【煽情結局：深夜的補償】<br>床鋪劇烈地晃動起來，比剛才Yoko獨自一人的時候更加瘋狂。這一夜還很長，去填補那一整天的冷戰空隙。</div>",
                 choices: [{ text: "重新開始遊戲", next: "start" }]
             },
             "path_hug_face_to_face": {
-                text: "Faye沒有說話，只是靜靜地從後面將她圈進懷裡。「對不起，是我沒站在妳的角度想。」<br><br>Yoko搖了搖頭，手指抓著Faye的手臂。「不�[...]",
+                text: "Faye沒有說話，只是靜靜地從後面環住Yoko的腰，將她整個人輕輕圈進懷裡。下巴擱在她肩上，像一個不會輕易鬆開的承諾。Yoko低低地嘆了口氣，那聲音裡帶著一整天的疲憊。<br><br>「對不起。」Faye的聲音輕而認真，「今天是我沒站在妳的角度想。妳已經很努力了，我卻還跟妳吵……是我錯了。」<br><br>Yoko搖了搖頭，手指抓著Faye的手臂。「不是你的錯……是我太玻璃心。」Faye心疼地收緊了手臂。「不應該。妳每天加班，誰敢說妳不夠好，我第一個不答應。」<br><br>她轉過Yoko的身體，雙手捧起她的臉。「明天按妳的節奏來，妳不是一個人，我在家等妳。」Yoko終於露出今天第一個淺淺的笑。<br><br>Faye低頭印下輕吻。「走吧，回我們房間睡覺。」她彎腰將Yoko打橫抱起。回到主臥，Faye從後面抱住Yoko，手掌輕拍，像在哄孩子入睡。<br><br>「晚安，寶貝。」Faye低語。Yoko十指相扣，聲音軟軟地回應：「……晚安。」<br><br><div class='good-end-text'>【Good End：溫暖的歸處】<br>房間裡只剩下兩人平穩的呼吸聲，窗外月光灑落，這一夜，終於安穩。</div>",
                 choices: [{ text: "重新開始遊戲", next: "start" }]
             },
             "path_listen": {
-                text: "Faye沒有敲門，而是耳貼門板。客房裡的聲音變得更清晰了，Yoko破碎的低吟一下一下刺進Faye的耳膜。<br><br>然而，就在下一秒，房內突�[...]",
+                text: "Faye沒有敲門，也沒有出聲。她屏住呼吸，額頭輕輕抵在冰冷的門板上，耳朵貼得更近。<br><br>客房裡的聲音變得更清晰了。Yoko的呼吸原本急促而凌亂，此刻似乎因為以為自己獨處，而逐漸放開。細碎的布料摩擦聲、輕微的床鋪晃動聲，還有那壓抑不住的、帶著水潤鼻音的低吟，一下一下，像細針般刺進Faye的耳膜。<br><br>Faye的臉頰發燙，心跳快得幾乎要衝出胸腔。她知道自己不該聽，卻又像被無形的線牽住，腳步挪不開。Yoko的聲音越來越軟，越來越破碎，甚至在某個瞬間，輕輕喚出了一聲「Faye……」<br><br>就是這一聲，讓Faye渾身一顫。<br><br>然而，就在下一秒，房內突然安靜下來。床鋪的晃動停了，呼吸聲也驟然收斂。Faye還沒反應過來，便聽見Yoko低低地、帶著顫音的自語：「……門外，是不是有人？」<br><br>Faye心頭一緊，還來不及後退，門便猛地被拉開。<br><br>Yoko站在門口，只裹著薄薄的睡袍，長髮散亂，臉頰緋紅，眼睛卻因羞恥與憤怒而泛起水光。她一眼就看見了貼在門外、還維持著偷聽姿勢的Faye。空氣瞬間凝固。<br><br>「妳……在偷聽？」Yoko的聲音從極低的顫抖，迅速轉為尖銳的憤怒，「我剛剛的聲音，妳全聽見了對不對？」<br><br>Faye張口想解釋，卻一個字也擠不出來。Yoko的眼淚瞬間奪眶而出，又羞又氣地用力將門甩上，發出巨響。門板狠狠撞在Faye的鼻尖前，讓她踉蹌退了半步。<br><br>「滾！」Yoko的哭喊從門內傳出，聲音哽咽而絕決，「我最討厭妳這樣！吵架的時候不來哄我，現在卻躲在門外偷聽我最難為情的時候……妳到底把我當什麼！」<br><br>隔著門板，Faye聽見Yoko將自己摔回床上，壓抑的哭聲混著枕頭被用力砸向牆壁的悶響。這一夜，兩人之間的裂痕比吵架前更深了。<br><br><div class='bad-end'>【遊戲失敗：偷聽的代價】<br>Yoko對Faye的信任崩潰，兩人從此陷入長期的冷戰。這段關係，再也回不到從前。</div>",
                 choices: [{ text: "重新開始遊戲", next: "start" }]
             },
             "path_enter": {
-                text: "Faye直接轉動門把推開了門。房內夜燈昏黃，Yoko蜷在床上，睡袍肩帶滑落。聽到聲音，她猛地一顫。「妳……怎麼直接進來了？」<br><br[...]", 
+                text: "Faye的心跳快得幾乎要衝出胸腔。她沒有敲門，也沒有猶豫，直接轉動門把，輕輕卻堅定地推開了客房的門。<br><br>房內的夜燈昏黃，Yoko蜷在床上，薄被只蓋到腰間，睡袍的肩帶滑落一邊，露出白皙的肩頭。她聽到門開的聲音，猛地一顫，轉過頭來，眼睛裡還帶著剛才的迷離與水光。<br><br>「妳……怎麼直接進來了？」Yoko的聲音啞啞的，試圖擺出憤怒的語氣，卻掩不住那份軟弱。她拉緊被子，想遮住自己剛才失控的模樣，臉頰紅得像要燒起來。<br><br>Faye沒有回答，只是緩緩走近床邊，目光鎖在她身上。那眼神裡沒有責備，只有心疼與渴望。Yoko咬著下唇，別開視線，卻沒有真的叫她出去。<br><br>Faye在床沿坐下，伸手輕輕拂開Yoko額前凌亂的髮絲。指尖碰到她微燙的肌膚時，Yoko的身體微微一抖，卻沒有躲開。<br><br>「對不起……」Faye低聲說，「我知道妳今天很累，很委屈。妳不是在生我的氣，對不對？只是……不知道該怎麼說。」<br><br>Yoko的眼眶瞬間又紅了。她沒有點頭，也沒有否認，只是低著頭，肩膀輕輕顫抖。Faye試探性地將手掌覆上她的手背，Yoko的手指先是僵硬，隨後卻慢慢放鬆，反過來扣住了Faye。<br><br>那一個小小的動作，像把兩人之間的冰一點點融化。",
                 choices: [
                     { text: "溫柔地將她擁入懷中", next: "path_enter_reconcile" },
                     { text: "俯身深深地吻她", next: "path_enter_passion" },
@@ -117,76 +127,76 @@
                 ]
             },
             "path_hug_undress": { 
-                text: "Faye動作變得強硬，扯開了睡袍繫帶。「還敢躲到客房來？讓我一個人在那張床上空著？」<br><br>Yoko想推開，卻發現力氣流失。事後，Fa[...]", 
+                text: "Faye從背後抱住Yoko時，動作比平常用力許多。她的手臂像鐵箍般緊緊扣住Yoko的腰，掌心隔著睡袍傳來灼熱的溫度，卻帶著一股壓抑不住的火氣。<br><br>「還敢躲到客房來？」Faye的聲音低啞，貼在Yoko耳後，帶著明顯的怒意，「吵個架就把自己關起來，讓我一個人在那張床上空著？」<br><br>Yoko被這突如其來的力道嚇得一顫，想掙扎，卻發現Faye的手已經粗魯地扯開了她睡袍的繫帶。薄薄的布料瞬間鬆開，滑落到腰間，涼意與羞恥同時襲來。<br><br>「不要……Faye，妳冷靜一點！」Yoko慌亂地抓住Faye的手腕，想把對方推開，聲音裡滿是抗拒與不適，「我現在不想……」<br><br>可是她的話還沒說完，Faye已經強硬地把她轉過身壓在床上。膝蓋頂開她的雙腿，手掌毫不溫柔地覆上她還殘留剛才自慰時敏感的身體。Yoko倒抽一口氣，試圖推開Faye的肩膀，指尖卻在碰到對方滾燙的皮膚時，力氣一點點流失。<br><br>「不想？」Faye冷笑一聲，俯身咬住她的鎖骨，力道重得幾乎要留下牙印，「那剛才在床上叫得那麼大聲，是在想誰？」<br><br>Yoko的眼眶瞬間泛紅，既羞又氣，身體卻在這粗暴的對待下不受控制地顫抖。她的推拒越來越軟弱，漸漸變成無意識的抓緊Faye的背脊，指甲陷入肌膚。淚水順著眼角滑落，混雜著喘息與破碎的嗚咽。<br><br>事後，Faye喘著氣躺在旁邊，想把Yoko攬進懷裡，卻被對方猛地甩開。「別碰我。」Yoko的聲音冷得像冰。這一次，裂痕不再是小吵小鬧，是徹徹底底的傷到了彼此最脆弱的地方。<br><br><div class='bad-end'>【Bad End：憤怒的代價】<br>Faye用最錯誤的方式試圖修補關係，卻把一切推向更深的深淵。</div>", 
                 choices: [{ text: "重新開始遊戲", next: "start" }] 
             },
             "path_sit_bed": { 
-                text: "Faye握住Yoko的手。「對不起，是我不好。」Yoko原本繃緊的肩膀放鬆了些。「我只是覺得自己好沒用……結果就發火了。」<br><br>Faye心頭[...]", 
+                text: "Faye輕輕在床沿坐下，刻意留了一點距離。她伸手握住Yoko那隻還攥著被角的手，指腹溫柔地摩挲。<br><br>「對不起，寶貝。」Faye的聲音低而穩，「今天我太沒耐心了，明明知道妳上班已經很累，還跟妳吵這些事……是我不好。」<br><br>Yoko原本繃緊的肩膀放鬆了些。過了好一會兒，才傳來她細細的聲音：「……我也不是真的在生你的氣。只是今天在公司被罵得很慘，回到家又怕妳覺得我無能……結果就發火了。」<br><br>Faye心頭一軟，將Yoko的雙手完全包進自己掌心。「妳一點都不無能。在我眼裡，妳永遠是最棒的。累了就靠著我，好不好？」<br><br>Yoko終於點了點頭，窩進了那個熟悉的懷抱。Faye一下一下輕拍她的背，像在哄一個受了驚的小動物。Yoko的呼吸漸漸平穩，聲音悶悶地傳來：「……我好想你。」", 
                 choices: [{ text: "重新開始遊戲", next: "start" }]
             },
             "path_tease": { 
-                text: "Faye壞笑著：「剛才，我在門外聽到一些很可愛的聲音喔。」Yoko臉頰緋紅：「變態！」<br><br>Faye低頭封住她的唇，這一夜，兩人在喘息�[...]",
+                text: "Faye在床沿坐下，目光在Yoko微紅的臉頰間流連。房間裡殘留的曖昧氣息還沒散去。<br><br>「剛才……」Faye故意拉長語調，帶著一絲壞笑，「我在門外聽到一些很可愛的聲音喔。」<br><br>Yoko的眼睛瞬間瞪大，臉頰緋紅：「妳、妳什麼時候站在門外的！變態！」<br><br>Faye輕笑出聲，一手撐在Yoko身側，將她半圈在臂彎裡。「變態？那剛才在床上叫我名字的人是誰？」說著，手指滑下，在睡袍領口輕輕畫圈。<br><br>Yoko倒抽一口氣，想推開她，卻發現手軟得使不上力。眼裡的水光不再是委屈，而是渴望。Faye看準時機，低頭封住她的唇，吻得又深又急。這一夜，兩人用最直接的方式和解。<br><br><div class='good-end-text'>【Good End：慾望的和解】<br>從此以後，只要一方情緒低落，另一方總會用最直接也最溫柔的方式，讓對方知道——她們永遠屬於彼此。</div>", 
                 choices: [{ text: "重新開始遊戲", next: "start" }] 
             },
             "path_enter_reconcile": {
-                text: "「我懂的。今天受委屈了，對不對？」Faye輕柔得像羽毛的一吻印下。當她的手覆上Yoko剛才觸碰過的地方時，Yoko發出一聲細細的嘆息。[...]", 
+                text: "Faye感受到Yoko手指的反扣，心裡那塊懸著的石頭終於落地。她用拇指在Yoko的手背上來回摩挲。<br><br>「我懂的。今天在公司受委屈了，對不對？」<br><br>Yoko抬起眼，淚水在眼眶裡打轉。「我只是……覺得自己好沒用。連妳都不想理我了。」<br><br>「傻瓜。」Faye俯身印下一吻，輕柔得像羽毛。她慢慢將Yoko拉進懷裡，耐心得像在梳理所有打結的情緒。當她的手終於覆上Yoko剛才自己觸碰過的地方時，Yoko發出一聲細細的嘆息，像是終於找到歸處。事後，Yoko軟軟地窩在Faye懷裡，聽著那穩穩的心跳。<br><br><div class='good-end-text'>【Good End：溫柔的歸屬】<br>吵架的陰影被最溫柔的親密徹底撫平。兩人的感情，在這一夜之後，變得更加深刻而堅定。</div>",
                 choices: [{ text: "重新開始遊戲", next: "start" }]
             },
             "path_enter_passion": {
-                text: "Faye眼神黯淡：「連睡前最後一個擁抱，我都沒資格給妳了嗎？」Yoko心頭一緊，突然撞進Faye懷裡回以熱吻。吻帶著歉意與愛意，隔閡燃[...]", 
+                text: "看到Faye闖入，Yoko想起自己剛才的模樣，羞恥感讓她下意識地喊道：「妳進來幹嘛？出去！」<br><br>Faye神色黯淡下來，聲音低沉得讓人心碎：「……原來在妳心裡，我已經是這種人了。連睡前最後一個擁抱，我都沒資格給妳了嗎？」<br><br>Yoko聽著那近乎哽咽的聲音，心猛地揪痛。這份愛意終於戰勝了羞恥。Yoko突然掀開被子，像一團火焰般撞進Faye的懷裡，給予了一個激烈的熱吻。吻帶著歉意與愛意。兩人的氣息徹底交纏，所有的隔閡都燃燒殆盡。<br><br><div class='good-end-text'>【Good End：熱烈的餘溫】<br>當激烈的吻與誠懇的道歉交織在一起，兩顆心終於再次緊貼。</div>",
                 choices: [{ text: "重新開始遊戲", next: "start" }]
             },
             "path_enter_friction": {
-                text: "Faye冷笑一聲：「躲過來就為了做這種事？叫得那麼大聲，聽起來有多廉價妳知道嗎？」<br><br>Yoko絕望地喊道：「妳嫌我吵？是因為我��[...]", 
+                text: "Faye坐在床沿，心裡的焦躁終於壓過了憐惜。她冷笑一聲：「躲到客房來，就是為了做這種事？」<br><br>Yoko臉色慘白：「妳……妳給我出去……」<br><br>「而且妳剛才叫得那麼大聲，吵到我根本沒法睡覺。」Faye口不擇言，「妳知不知道那種聲音聽起來有多廉價？」<br><br>這句話像一把利刃。Yoko眼眶裡滿是絕望：「妳嫌我吵？明明是因為我愛妳愛到發瘋！」<br><br>Faye站起身，頭也不回地走出房門，用力地將門摔上。房內傳來了Yoko崩潰的嚎啕大哭。Faye站在門外，知道自己贏了這場爭吵，卻徹底輸掉了這個人。<br><br><div class='bad-end'>【Bad End：碎裂的尊嚴】<br>最親密的愛人，成了傷人最深的劊子手。這段關係，隨著那聲摔門聲，走向了終局。</div>",
                 choices: [{ text: "重新開始遊戲", next: "start" }]
             }
         };
 
-        // --- 遊戲邏輯 ---
         let historyStack = [];
 
         function renderStory(segmentId, isBack = false) {
             const segment = storyData[segmentId];
             if (!segment) return;
-
             const storyTextElement = document.getElementById('story-text');
+            const actionArea = document.getElementById('action-area');
             const choicesElement = document.getElementById('choices');
             const navElement = document.getElementById('navigation');
 
             if (!isBack && segmentId === 'start') historyStack = [];
 
-            storyTextElement.style.opacity = 0;
+            storyTextElement.classList.replace('opacity-100', 'opacity-0');
+            actionArea.classList.replace('opacity-100', 'opacity-0');
+
             setTimeout(() => {
-                storyTextElement.innerHTML = segment.text;
+                const paragraphs = segment.text.split('<br><br>');
+                storyTextElement.innerHTML = paragraphs.map(p => `<p class="story-p">${p}</p>`).join('');
                 choicesElement.innerHTML = '';
                 navElement.innerHTML = '';
 
-                // --- 隨機排序選項 ---
-                const shuffledChoices = [...segment.choices].sort(() => Math.random() - 0.5);
-
-                shuffledChoices.forEach(choice => {
-                    const btn = document.createElement('button');
-                    btn.textContent = choice.text;
-                    btn.className = "bg-accent-button text-white py-3 px-8 rounded-full hover:bg-accent-button-hover transition-all min-w-[200px]";
-                    btn.onclick = () => { 
-                        historyStack.push(segmentId); 
-                        renderStory(choice.next); 
+                segment.choices.forEach(choice => {
+                    const button = document.createElement('button');
+                    button.textContent = choice.text;
+                    button.className = `bg-accent-button text-white font-body font-semibold py-3 px-8 rounded-full shadow-md hover:bg-accent-button-hover hover:scale-105 transition-all duration-300 text-lg min-w-[280px] sm:min-w-[220px]`;
+                    button.onclick = () => {
+                        historyStack.push(segmentId);
+                        renderStory(choice.next);
                     };
-                    choicesElement.appendChild(btn);
+                    choicesElement.appendChild(button);
                 });
 
                 if (historyStack.length > 0) {
                     const backBtn = document.createElement('button');
-                    backBtn.textContent = "⬅ 回上一步";
-                    backBtn.className = "text-gray-500 text-sm underline mt-4 cursor-pointer hover:text-accent-button";
+                    backBtn.textContent = "⬅ 回到上一步動作";
+                    backBtn.className = `bg-gray-500/50 text-white font-body font-medium py-3 px-8 rounded-full border border-white/30 hover:bg-gray-600 transition-all duration-300 text-base w-full max-w-[280px] sm:max-w-[460px]`;
                     backBtn.onclick = () => renderStory(historyStack.pop(), true);
                     navElement.appendChild(backBtn);
                 }
-                storyTextElement.style.opacity = 1;
-            }, 300);
-        }
 
-        // 啟動首章
+                storyTextElement.classList.replace('opacity-0', 'opacity-100');
+                actionArea.classList.replace('opacity-0', 'opacity-100');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 500);
+        }
         renderStory('start');
     </script>
 </body>
