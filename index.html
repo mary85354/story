@@ -59,6 +59,7 @@
         }
         .main-title { margin-bottom: 0.5rem; text-align: center; }
         .stat-badge { margin-top: 1rem; font-size: 0.85rem; color: hsl(20, 10%, 50%); letter-spacing: 0.05em; opacity: 0.8; }
+        .small-note { font-size: 0.75rem; color: hsl(20,10%,45%); }
     </style>
 </head>
 
@@ -75,12 +76,12 @@
 
                 <main class="flex flex-col sm:flex-row justify-center items-center gap-4 w-full">
                     <a href="test1.html"
-                       class="w-full sm:w-auto text-center bg-accent-button text-white font-body font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-accent-button-hover hover:scale-105 transition-all duration-300 ease-in-out text-lg min-w-[180px]">
+                       class="w-full sm:w-auto text-center bg-accent-button text-white font-body font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-accent-button-hover hover:scale-105 transition-transform duration-200">
                         最初測試版
                     </a>
 
                     <a href="test2.html"
-                       class="w-full sm:w-auto text-center bg-accent-button text-white font-body font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-accent-button-hover hover:scale-105 transition-all duration-300 ease-in-out text-lg min-w-[180px]">
+                       class="w-full sm:w-auto text-center bg-accent-button text-white font-body font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-accent-button-hover hover:scale-105 transition-transform duration-200">
                         深夜客房
                     </a>
                 </main>
@@ -88,6 +89,15 @@
                 <div class="stat-badge">
                     目前累積進場人數：<span id="view-count" class="font-bold">讀取中</span>
                 </div>
+
+                <div class="small-note mt-2">
+                    （本站會記錄每個瀏覽器是否已被計數；已計數的瀏覽器不會再次增加總數）
+                </div>
+
+                <div id="admin-controls" class="mt-4" style="display:none;">
+                    <button id="reset-btn" class="bg-white text-text-primary border border-gray-200 px-3 py-2 rounded-md shadow-sm">重置計數（管理）</button>
+                </div>
+
             </div>
         </section>
 
@@ -96,24 +106,119 @@
 
     <script>
         (function() {
-            // 回歸最初的 CounterAPI 設定
-            const apiUrl = "https://api.counterapi.dev/v1/faye_yoko_game_stats/visits/up";
+            // 使用 localStorage 排除同一瀏覽器重複計數
+            const apiBase = "https://api.counterapi.dev/v1/faye_yoko_game_stats/visits";
             const displayElement = document.getElementById('view-count');
+            const visitedKey = 'faye_yoko_visited_v1';
+            const lastCountKey = 'faye_yoko_last_count_v1';
 
-            // 執行計數並顯示
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    if (displayElement) {
-                        displayElement.innerText = data.count;
+            const isAdmin = new URLSearchParams(location.search).get('admin') === '1';
+
+            function showCount(value) {
+                if (!displayElement) return;
+                displayElement.innerText = (value === null || value === undefined) ? '連線中' : String(value);
+            }
+
+            async function fetchCount() {
+                // 嘗試不增加次數的取值端點（視服務而定）
+                try {
+                    const res = await fetch(apiBase);
+                    if (!res.ok) throw new Error('fetch / failed');
+                    const data = await res.json();
+                    return data.count ?? data.value ?? data;
+                } catch (e) {
+                    // 若服務不支援直接取值，回傳 null，顯示本地緩存的數字
+                    console.warn('fetchCount failed', e);
+                    return null;
+                }
+            }
+
+            async function incrementCount() {
+                try {
+                    const res = await fetch(apiBase + '/up');
+                    if (!res.ok) throw new Error('increment failed');
+                    const data = await res.json();
+                    return data.count ?? data.value ?? data;
+                } catch (e) {
+                    console.error('incrementCount failed', e);
+                    return null;
+                }
+            }
+
+            async function resetCount() {
+                // 簡易保護：需要輸入密碼才能執行重置，請自行修改密碼或改用更安全的方法
+                const pwd = prompt('請輸入管理密碼以重置計數：');
+                if (pwd !== 'RESET_ME') {
+                    alert('密碼錯誤或已取消');
+                    return null;
+                }
+
+                try {
+                    const res = await fetch(apiBase + '/reset', { method: 'POST' });
+                    if (!res.ok) throw new Error('reset request failed');
+                    const data = await res.json();
+                    return data.count ?? data.value ?? data;
+                } catch (e) {
+                    console.error('resetCount failed', e);
+                    alert('重置失敗：伺服端可能不支援遠端重置或需憑證。詳細請參考你的計數服務文件。');
+                    return null;
+                }
+            }
+
+            async function init() {
+                const visited = localStorage.getItem(visitedKey) === '1';
+
+                if (!visited) {
+                    // 尚未被計數：執行加一操作
+                    const newCount = await incrementCount();
+                    if (newCount !== null) {
+                        localStorage.setItem(visitedKey, '1');
+                        localStorage.setItem(lastCountKey, String(newCount));
+                        showCount(newCount);
+                    } else {
+                        // 若無法加一，嘗試從伺服器取得現有數值或顯示本地緩存
+                        const fetched = await fetchCount();
+                        if (fetched !== null) {
+                            showCount(fetched);
+                            localStorage.setItem(lastCountKey, String(fetched));
+                        } else {
+                            const cached = localStorage.getItem(lastCountKey);
+                            showCount(cached ? Number(cached) : null);
+                        }
                     }
-                })
-                .catch(error => {
-                    console.error('Counter Error:', error);
-                    if (displayElement) {
-                        displayElement.innerText = "連線中";
+                } else {
+                    // 已被計數：只讀取當前數值，不再增加
+                    const fetched = await fetchCount();
+                    if (fetched !== null) {
+                        showCount(fetched);
+                        localStorage.setItem(lastCountKey, String(fetched));
+                    } else {
+                        const cached = localStorage.getItem(lastCountKey);
+                        showCount(cached ? Number(cached) : null);
                     }
-                });
+                }
+
+                // 管理介面（只在 admin=1 時顯示）
+                if (isAdmin) {
+                    const ctrl = document.getElementById('admin-controls');
+                    if (ctrl) ctrl.style.display = 'block';
+                    const btn = document.getElementById('reset-btn');
+                    if (btn) {
+                        btn.addEventListener('click', async () => {
+                            const result = await resetCount();
+                            if (result !== null) {
+                                // 不清除本地 visited 標記，這樣被排除的瀏覽器會維持不被重複計數
+                                localStorage.setItem(lastCountKey, String(result));
+                                showCount(result);
+                                alert('已嘗試重置伺服器上的計數（請確認服務端是否真的支援重置）。已保留本機已計數狀態，排除本瀏覽器再次計數。');
+                            }
+                        });
+                    }
+                }
+            }
+
+            // 立即啟動
+            init();
         })();
     </script>
 
