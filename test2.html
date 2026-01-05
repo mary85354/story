@@ -60,9 +60,11 @@
             </main>
         </div>
         <footer class="footer-stats">
-            <div class="max-w-xs mx-auto border-t border-gray-300/30 pt-2">
-                <p>目前累積進場人數：<span id="view-count" class="font-bold">讀取中</span></p>
-                <a href="index.html" class="inline-block mt-2 underline opacity-60 hover:opacity-100 transition-opacity">返回首頁</a>
+            <div class="max-w-xs mx-auto border-t border-gray-300/30 pt-4">
+                <!-- 顯著的大按鈕返回首頁 -->
+                <a href="index.html" class="inline-block w-full text-center mt-2 bg-accent-button text-white font-body font-semibold py-4 px-6 rounded-full shadow-lg hover:bg-accent-button-hover hover:scale-105 transition-transform duration-200">
+                    返回首頁
+                </a>
             </div>
         </footer>
     </div>
@@ -71,7 +73,7 @@
         // --- 劇情資料庫 ---
         const storyData = {
             "start": {
-                text: "下班後的爭吵讓屋子裡的空氣凝結著冰冷的尷尬。Yoko賭氣地抱著枕頭，將自己關進了另一間客房，留下Faye獨自一人面對空蕩的雙人床。<br><br>Faye的心頭沉甸甸的，翻來覆去也睡不著。另一邊，客房裡的Yoko也並不安穩，少了身邊熟悉的體溫和Faye的輕柔擁抱，她感到一股難以言喻的空虛。習慣性的，她的手不自覺地滑向自己的肌膚，試圖尋找一絲慰藉。<br><br>微弱的呻吟聲不經意地從她口中溢出，在這靜謐的夜裡顯得格外清晰，清晰到，隔壁房的Faye也能聽得一清二楚。Faye的心臟猛地一跳，她輕手輕腳地下了床，摸黑靠近了客房門。<br><br>接下來 Faye 該怎麼做？",
+                text: "下班後的爭吵讓屋子裡的空氣凝結著冰冷的尷尬。Yoko賭氣地抱著枕頭，將自己關進了另一間客房，留下Faye獨自一人面對空蕩的雙人床�[...]",
                 choices: [
                     { text: "敲門，輕聲呼喚", next: "path_knock" },
                     { text: "在門外偷聽", next: "path_listen" },
@@ -79,7 +81,7 @@
                 ]
             },
             "path_knock": {
-                text: "Faye站在客房門外，輕輕敲了三下。「Yoko……妳睡了嗎？」<br><br>房內的動作瞬間停了。過了幾秒，Yoko努力讓語氣聽起來平靜，卻還是藏不住那點慌亂：「……還沒。怎麼了？」<br><br>門被緩緩拉開一條縫。Faye探頭進來望了望，只見Yoko露出一張被夜燈映得微紅的臉。「我想跟妳談談……。」Faye小心翼翼地詢問。<br><br>「……進來吧。」她小聲說完，轉身走回床邊背對著Faye坐下。",
+                text: "Faye站在客房門外，輕輕敲了三下。「Yoko……妳睡了嗎？」<br><br>房內的動作瞬間停了。過了幾秒，Yoko努力讓語氣聽起來平靜，卻還是�[...]",
                 choices: [
                     { text: "坐在床邊安撫她", next: "path_sit_bed" },
                     { text: "從背後輕輕抱住她", next: "path_hug_back" },
@@ -87,7 +89,7 @@
                 ]
             },
             "path_hug_back": {
-                text: "Faye繞到床的另一側，從背後輕輕環住Yoko的腰。掌心貼上她睡袍下微熱的腹部。<br><br>「還在生氣嗎？」Faye低低的聲音貼在她耳邊，「我都主動投降了，寶貝還要我怎麼辦才肯原諒我？」<br><br>Yoko嘴上說著「誰要你抱」，身體卻不自覺地往後靠，讓背脊貼上Faye的胸口。Faye故意鬆了鬆手臂，又立刻收緊，「嗯？抓著我不放的是誰呀？」",
+                text: "Faye繞到床的另一側，從背後輕輕環住Yoko的腰。掌心貼上她睡袍下微熱的腹部。<br><br>「還在生氣嗎？」Faye低低的聲音貼在她耳邊，「�[...]",
                 choices: [
                     { text: "調皮地戲弄她", next: "path_hug_neck_kiss" },
                     { text: "靜靜地聽對方的話", next: "path_hug_face_to_face" },
@@ -95,19 +97,19 @@
                 ]
             },
             "path_hug_neck_kiss": {
-                text: "Faye故意用鼻尖蹭她的脖子，逗她笑，問她：「要不要我幫妳……把剛才沒做完的事做完？」那片敏感的肌膚立刻起了一層細小的雞皮疙瘩。<br><br>Yoko終於主動迎上去，雙臂環住Faye的脖子。好一會兒，Faye才意猶未盡地退開一些，一隻手順勢滑到Yoko的胸前。<br><br><div class='happy-end-text'>【煽情結局：深夜的補償】<br>床鋪劇烈地晃動起來，這一夜還很長，去填補那一整天的冷戰空隙。</div>",
+                text: "Faye故意用鼻尖蹭她的脖子，逗她笑，問她：「要不要我幫妳……把剛才沒做完的事做完？」那片敏感的肌膚立刻起了一層細小的雞皮��[...]",
                 choices: [{ text: "重新開始遊戲", next: "start" }]
             },
             "path_hug_face_to_face": {
-                text: "Faye沒有說話，只是靜靜地從後面將她圈進懷裡。「對不起，是我沒站在妳的角度想。」<br><br>Yoko搖了搖頭，手指抓著Faye的手臂。「不是你的錯……是我太玻璃心。」Faye心疼地收緊了手臂，轉過Yoko的身體，雙手捧起她的臉。<br><br><div class='good-end-text'>【Good End：溫暖的歸處】<br>房間裡只剩下兩人平穩的呼吸聲，窗外月光灑落，這一夜，終於安穩。</div>",
+                text: "Faye沒有說話，只是靜靜地從後面將她圈進懷裡。「對不起，是我沒站在妳的角度想。」<br><br>Yoko搖了搖頭，手指抓著Faye的手臂。「不�[...]",
                 choices: [{ text: "重新開始遊戲", next: "start" }]
             },
             "path_listen": {
-                text: "Faye沒有敲門，而是耳貼門板。客房裡的聲音變得更清晰了，Yoko破碎的低吟一下一下刺進Faye的耳膜。<br><br>然而，就在下一秒，房內突然安靜下來。門猛地被拉開，Yoko站在門口，眼神因羞恥與憤怒而泛起水光。「妳……在偷聽？」<br><br><div class='bad-end'>【遊戲失敗：偷聽的代價】<br>Yoko對Faye的信任崩潰。吵架時不來哄她，卻躲在門外聽她最難為情的時刻，這段關係，再也回不去了。</div>",
+                text: "Faye沒有敲門，而是耳貼門板。客房裡的聲音變得更清晰了，Yoko破碎的低吟一下一下刺進Faye的耳膜。<br><br>然而，就在下一秒，房內突�[...]",
                 choices: [{ text: "重新開始遊戲", next: "start" }]
             },
             "path_enter": {
-                text: "Faye直接轉動門把推開了門。房內夜燈昏黃，Yoko蜷在床上，睡袍肩帶滑落。聽到聲音，她猛地一顫。「妳……怎麼直接進來了？」<br><br>Faye在床沿坐下，伸手拂開她凌亂的髮絲。「對不起，我知道妳今天很委屈。妳不是在生我的氣，對不對？」Yoko沒說話，卻反過來扣住了Faye的手。",
+                text: "Faye直接轉動門把推開了門。房內夜燈昏黃，Yoko蜷在床上，睡袍肩帶滑落。聽到聲音，她猛地一顫。「妳……怎麼直接進來了？」<br><br[...]", 
                 choices: [
                     { text: "溫柔地將她擁入懷中", next: "path_enter_reconcile" },
                     { text: "俯身深深地吻她", next: "path_enter_passion" },
@@ -115,27 +117,27 @@
                 ]
             },
             "path_hug_undress": { 
-                text: "Faye動作變得強硬，扯開了睡袍繫帶。「還敢躲到客房來？讓我一個人在那張床上空著？」<br><br>Yoko想推開，卻發現力氣流失。事後，Faye想把Yoko攬進懷裡，卻被對方猛地甩開。「別碰我。」Yoko的聲音冷得像冰。<br><br><div class='bad-end'>【Bad End：憤怒的代價】<br>Faye用最錯誤的方式試圖修補關係，卻把一切推向更深的深淵。</div>", 
+                text: "Faye動作變得強硬，扯開了睡袍繫帶。「還敢躲到客房來？讓我一個人在那張床上空著？」<br><br>Yoko想推開，卻發現力氣流失。事後，Fa[...]", 
                 choices: [{ text: "重新開始遊戲", next: "start" }] 
             },
             "path_sit_bed": { 
-                text: "Faye握住Yoko的手。「對不起，是我不好。」Yoko原本繃緊的肩膀放鬆了些。「我只是覺得自己好沒用……結果就發火了。」<br><br>Faye心頭一軟，將Yoko包進掌心。「在我眼裡，妳永遠是最棒的。」Yoko終於點了頭，窩進了熟悉的懷抱。", 
+                text: "Faye握住Yoko的手。「對不起，是我不好。」Yoko原本繃緊的肩膀放鬆了些。「我只是覺得自己好沒用……結果就發火了。」<br><br>Faye心頭[...]", 
                 choices: [{ text: "重新開始遊戲", next: "start" }]
             },
             "path_tease": { 
-                text: "Faye壞笑著：「剛才，我在門外聽到一些很可愛的聲音喔。」Yoko臉頰緋紅：「變態！」<br><br>Faye低頭封住她的唇，這一夜，兩人在喘息中達成了最直接的和解。<br><br><div class='good-end-text'>【Good End：慾望的和解】<br>只要一方情緒低落，另一方總會用最溫柔的方式，讓對方知道——她們永遠屬於彼此。</div>", 
+                text: "Faye壞笑著：「剛才，我在門外聽到一些很可愛的聲音喔。」Yoko臉頰緋紅：「變態！」<br><br>Faye低頭封住她的唇，這一夜，兩人在喘息�[...]",
                 choices: [{ text: "重新開始遊戲", next: "start" }] 
             },
             "path_enter_reconcile": {
-                text: "「我懂的。今天受委屈了，對不對？」Faye輕柔得像羽毛的一吻印下。當她的手覆上Yoko剛才觸碰過的地方時，Yoko發出一聲細細的嘆息。<br><br><div class='good-end-text'>【Good End：溫柔的歸屬】<br>兩人的感情，在這一夜之後，變得更加深刻而堅定。</div>",
+                text: "「我懂的。今天受委屈了，對不對？」Faye輕柔得像羽毛的一吻印下。當她的手覆上Yoko剛才觸碰過的地方時，Yoko發出一聲細細的嘆息。[...]", 
                 choices: [{ text: "重新開始遊戲", next: "start" }]
             },
             "path_enter_passion": {
-                text: "Faye眼神黯淡：「連睡前最後一個擁抱，我都沒資格給妳了嗎？」Yoko心頭一緊，突然撞進Faye懷裡回以熱吻。吻帶著歉意與愛意，隔閡燃燒殆盡。<br><br><div class='good-end-text'>【Good End：熱烈的餘溫】<br>當激烈的吻與誠誠懇懇的道歉交織在一起，兩顆心終於再次緊貼。</div>",
+                text: "Faye眼神黯淡：「連睡前最後一個擁抱，我都沒資格給妳了嗎？」Yoko心頭一緊，突然撞進Faye懷裡回以熱吻。吻帶著歉意與愛意，隔閡燃[...]", 
                 choices: [{ text: "重新開始遊戲", next: "start" }]
             },
             "path_enter_friction": {
-                text: "Faye冷笑一聲：「躲過來就為了做這種事？叫得那麼大聲，聽起來有多廉價妳知道嗎？」<br><br>Yoko絕望地喊道：「妳嫌我吵？是因為我愛妳愛到發瘋！」Faye轉身走出房門重重摔上。房內傳來崩潰的哭聲。<br><br><div class='bad-end'>【Bad End：碎裂的尊嚴】<br>最親密的愛人成了傷人最深的劊子手。</div>",
+                text: "Faye冷笑一聲：「躲過來就為了做這種事？叫得那麼大聲，聽起來有多廉價妳知道嗎？」<br><br>Yoko絕望地喊道：「妳嫌我吵？是因為我��[...]", 
                 choices: [{ text: "重新開始遊戲", next: "start" }]
             }
         };
@@ -160,7 +162,6 @@
                 navElement.innerHTML = '';
 
                 // --- 隨機排序選項 ---
-                // 複製一份選項並隨機排列，保留遊戲隨機性
                 const shuffledChoices = [...segment.choices].sort(() => Math.random() - 0.5);
 
                 shuffledChoices.forEach(choice => {
@@ -184,17 +185,6 @@
                 storyTextElement.style.opacity = 1;
             }, 300);
         }
-
-        // --- 唯讀計數器 ---
-        (function() {
-            const namespace = "faye_yoko_game_stats"; 
-            const key = "visits";
-            const display = document.getElementById('view-count');
-            fetch(`https://api.counterapi.dev/v1/${namespace}/${key}`)
-                .then(res => res.json())
-                .then(data => { if(display) display.innerText = data.count; })
-                .catch(() => { if(display) display.innerText = "無法載入"; });
-        })();
 
         // 啟動首章
         renderStory('start');
