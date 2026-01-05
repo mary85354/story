@@ -107,10 +107,11 @@
     <script>
         (function() {
             // 使用 localStorage 排除同一瀏覽器重複計數
-            const apiBase = "https://api.counterapi.dev/v1/faye_yoko_game_stats/visits";
+            // 改用新的計數 id，讓計數從 0 開始
+            const apiBase = "https://api.counterapi.dev/v1/faye_yoko_game_stats_v2/visits";
             const displayElement = document.getElementById('view-count');
-            const visitedKey = 'faye_yoko_visited_v1';
-            const lastCountKey = 'faye_yoko_last_count_v1';
+            const visitedKey = 'faye_yoko_visited_v2';
+            const lastCountKey = 'faye_yoko_last_count_v2';
 
             const isAdmin = new URLSearchParams(location.search).get('admin') === '1';
 
@@ -127,7 +128,6 @@
                     const data = await res.json();
                     return data.count ?? data.value ?? data;
                 } catch (e) {
-                    // 若服務不支援直接取值，回傳 null，顯示本地緩存的數字
                     console.warn('fetchCount failed', e);
                     return null;
                 }
