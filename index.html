@@ -104,150 +104,152 @@
         <section class="bottom-half"></section>
     </div>
 
-  <script>
+<script>
 (function() {
-    // 使用 localStorage 排除同一瀏覽器重複計數
-    // 改用新的計數 id（請確認與您目前使用的一致）
-    const apiBase = "https://api.counterapi.dev/v1/faye_yoko_game_stats_v2/visits";
-    const displayElement = document.getElementById('view-count');
-    const visitedKey = 'faye_yoko_visited_v2';
-    const lastCountKey = 'faye_yoko_last_count_v2';
+  const apiBase = "https://api.counterapi.dev/v1/faye_yoko_game_stats_v2/visits";
+  const displayElement = document.getElementById('view-count');
+  const visitedKey = 'faye_yoko_visited_v2';
+  const lastCountKey = 'faye_yoko_last_count_v2';
+  const isAdmin = new URLSearchParams(location.search).get('admin') === '1';
 
-    const isAdmin = new URLSearchParams(location.search).get('admin') === '1';
+  function showCount(value) {
+    if (!displayElement) return;
+    displayElement.innerText = (value === null || value === undefined) ? '連線中' : String(value);
+  }
 
-    function showCount(value) {
-        if (!displayElement) return;
-        displayElement.innerText = (value === null || value === undefined) ? '連線中' : String(value);
+  async function parseCountResponse(res) {
+    try {
+      const data = await res.json();
+      // 對常見欄位做容錯
+      if (data == null) return null;
+      if (typeof data === 'number') return data;
+      if (data.count != null) return data.count;
+      if (data.value != null) return data.value;
+      // 如果回傳是一個物件且含其他數字欄位，嘗試取第一個 number 屬性
+      for (const k of Object.keys(data)) {
+        if (typeof data[k] === 'number') return data[k];
+      }
+      return null;
+    } catch (e) {
+      console.warn('parseCountResponse failed', e);
+      return null;
     }
+  }
 
-    async function fetchCount() {
-        // GET 目前數值（不會增加）
-        try {
-            const res = await fetch(apiBase, { cache: 'no-store' });
-            if (!res.ok) throw new Error('fetch / failed');
-            const data = await res.json();
-            return data.count ?? data.value ?? data;
-        } catch (e) {
-            console.warn('fetchCount failed', e);
-            return null;
-        }
+  async function fetchCount() {
+    try {
+      const res = await fetch(apiBase, { cache: 'no-store' });
+      if (!res.ok) throw new Error('fetch failed ' + res.status);
+      return await parseCountResponse(res);
+    } catch (e) {
+      // 失敗回傳 null，不會改變顯示
+      console.warn('fetchCount error', e);
+      return null;
     }
+  }
 
-    async function incrementCount() {
-        try {
-            const res = await fetch(apiBase + '/up');
-            if (!res.ok) throw new Error('increment failed');
-            const data = await res.json();
-            return data.count ?? data.value ?? data;
-        } catch (e) {
-            console.error('incrementCount failed', e);
-            return null;
-        }
+  async function incrementCount() {
+    try {
+      const res = await fetch(apiBase + '/up');
+      if (!res.ok) throw new Error('increment failed ' + res.status);
+      return await parseCountResponse(res);
+    } catch (e) {
+      console.warn('incrementCount error', e);
+      return null;
     }
+  }
 
-    async function resetCount() {
-        const pwd = prompt('請輸入管理密碼以重置計數：');
-        if (pwd !== 'RESET_ME') {
-            alert('密碼錯誤或已取消');
-            return null;
-        }
-
-        try {
-            const res = await fetch(apiBase + '/reset', { method: 'POST' });
-            if (!res.ok) throw new Error('reset request failed');
-            const data = await res.json();
-            return data.count ?? data.value ?? data;
-        } catch (e) {
-            console.error('resetCount failed', e);
-            alert('重置失敗：伺服端可能不支援遠端重置或需憑證。詳細請參考你的計數服務文件。');
-            return null;
-        }
+  async function resetCount() {
+    const pwd = prompt('請輸入管理密碼以重置計數：');
+    if (pwd !== 'RESET_ME') { alert('密碼錯誤或已取消'); return null; }
+    try {
+      const res = await fetch(apiBase + '/reset', { method: 'POST' });
+      if (!res.ok) throw new Error('reset failed ' + res.status);
+      return await parseCountResponse(res);
+    } catch (e) {
+      console.warn('resetCount error', e);
+      alert('重置失敗：伺服端可能不支援遠端重置或需憑證。');
+      return null;
     }
+  }
 
-    // 週期性取得最新數字並更新畫面（不會對伺服器做 /up）
-    async function pollAndUpdate(intervalMs = 8000) {
-        // 先立刻抓一次
-        const first = await fetchCount();
-        if (first !== null) {
-            showCount(first);
-            localStorage.setItem(lastCountKey, String(first));
+  // 週期性 poll（使用 setInterval，確保會持續執行）
+  function startPolling(intervalMs = 8000) {
+    // 立即 poll 一次（非 await 以免阻塞）
+    (async () => {
+      const v = await fetchCount();
+      if (v !== null) {
+        showCount(v);
+        localStorage.setItem(lastCountKey, String(v));
+      }
+    })();
+
+    // 串起 interval
+    return setInterval(async () => {
+      const v = await fetchCount();
+      if (v !== null) {
+        showCount(v);
+        localStorage.setItem(lastCountKey, String(v));
+      }
+    }, intervalMs);
+  }
+
+  async function init() {
+    const visited = localStorage.getItem(visitedKey) === '1';
+
+    if (!visited) {
+      // 先嘗試加一
+      const after = await incrementCount();
+      if (after !== null) {
+        localStorage.setItem(visitedKey, '1');
+        localStorage.setItem(lastCountKey, String(after));
+        showCount(after);
+      } else {
+        // 增加失敗就抓一次現有數
+        const v = await fetchCount();
+        if (v !== null) {
+          showCount(v);
+          localStorage.setItem(lastCountKey, String(v));
         } else {
-            const cached = localStorage.getItem(lastCountKey);
-            if (cached) showCount(Number(cached));
+          const cached = localStorage.getItem(lastCountKey);
+          showCount(cached ? Number(cached) : null);
         }
-
-        // 週期性更新
-        return setInterval(async () => {
-            const v = await fetchCount();
-            if (v !== null) {
-                showCount(v);
-                localStorage.setItem(lastCountKey, String(v));
-            }
-        }, intervalMs);
+      }
+    } else {
+      // 若已標記過，仍要嘗試抓一次最新值
+      const v = await fetchCount();
+      if (v !== null) {
+        showCount(v);
+        localStorage.setItem(lastCountKey, String(v));
+      } else {
+        const cached = localStorage.getItem(lastCountKey);
+        showCount(cached ? Number(cached) : null);
+      }
     }
 
-    async function init() {
-        const visited = localStorage.getItem(visitedKey) === '1';
+    // 啟動長期 poll
+    const pollHandle = startPolling(8000);
 
-        if (!visited) {
-            // 尚未被計數：執行加一操作
-            const newCount = await incrementCount();
-            if (newCount !== null) {
-                // 設定為已被計數（只對這個瀏覽器）
-                localStorage.setItem(visitedKey, '1');
-                localStorage.setItem(lastCountKey, String(newCount));
-                showCount(newCount);
-            } else {
-                // 無法加一時，仍嘗試讀取現有數值
-                const fetched = await fetchCount();
-                if (fetched !== null) {
-                    showCount(fetched);
-                    localStorage.setItem(lastCountKey, String(fetched));
-                } else {
-                    // 顯示緩存或連線中
-                    const cached = localStorage.getItem(lastCountKey);
-                    showCount(cached ? Number(cached) : null);
-                }
-            }
-        } else {
-            // 已被計數：先讀一次伺服器最新值或快取
-            const fetched = await fetchCount();
-            if (fetched !== null) {
-                showCount(fetched);
-                localStorage.setItem(lastCountKey, String(fetched));
-            } else {
-                const cached = localStorage.getItem(lastCountKey);
-                showCount(cached ? Number(cached) : null);
-            }
-        }
-
-        // 啟動週期性 poll（使 A 能看到 B/C 後來的造訪）
-        const pollHandle = pollAndUpdate(8000); // 8 秒一請求，可改成 5000 或 10000
-
-        // 管理介面（只在 admin=1 時顯示）
-        if (isAdmin) {
-            const ctrl = document.getElementById('admin-controls');
-            if (ctrl) ctrl.style.display = 'block';
-            const btn = document.getElementById('reset-btn');
-            if (btn) {
-                btn.addEventListener('click', async () => {
-                    const result = await resetCount();
-                    if (result !== null) {
-                        // 不清除本地 visited 標記，這樣被排除的瀏覽器會維持不被重複計數
-                        localStorage.setItem(lastCountKey, String(result));
-                        showCount(result);
-                        alert('已嘗試重置伺服器上的計數（請確認服務端是否真的支援重置）。已保留本機已計數狀態，排除本瀏覽器再次計數。');
-                    }
-                });
-            }
-        }
-
-        // 若您想在離開頁面時暫停 poll，可以取消 interval：
-        // window.addEventListener('beforeunload', () => clearInterval(pollHandle));
+    // 管理按鈕顯示與重置行為
+    if (isAdmin) {
+      const ctrl = document.getElementById('admin-controls');
+      if (ctrl) ctrl.style.display = 'block';
+      const btn = document.getElementById('reset-btn');
+      if (btn) {
+        btn.addEventListener('click', async () => {
+          const res = await resetCount();
+          if (res !== null) {
+            localStorage.setItem(lastCountKey, String(res));
+            showCount(res);
+            alert('已嘗試重置伺服器上的計數，並保留本機已計數狀態。');
+          }
+        });
+      }
     }
+  }
 
-    // 立即啟動
-    init();
+  // 啟動
+  init();
 })();
 </script>
 
