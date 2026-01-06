@@ -76,12 +76,12 @@
 
                 <main class="flex flex-col sm:flex-row justify-center items-center gap-4 w-full">
                     <a href="test1.html"
-                       class="w-full sm:w-auto text-center bg-accent-button text-white font-body font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-accent-button-hover hover:scale-105 transition-transform duration-200">
+                       class="w-full sm:w-auto text-center bg-accent-button text-white font-body font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-accent-button-hover hover:scale-105 transition-all duration-200">
                         最初測試版
                     </a>
 
                     <a href="test2.html"
-                       class="w-full sm:w-auto text-center bg-accent-button text-white font-body font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-accent-button-hover hover:scale-105 transition-transform duration-200">
+                       class="w-full sm:w-auto text-center bg-accent-button text-white font-body font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-accent-button-hover hover:scale-105 transition-all duration-200">
                         深夜客房
                     </a>
                 </main>
@@ -94,164 +94,88 @@
                     （本站會記錄每個瀏覽器是否已被計數；已計數的瀏覽器不會再次增加總數）
                 </div>
 
-                <div id="admin-controls" class="mt-4" style="display:none;">
-                    <button id="reset-btn" class="bg-white text-text-primary border border-gray-200 px-3 py-2 rounded-md shadow-sm">重置計數（管理）</button>
-                </div>
-
             </div>
         </section>
 
         <section class="bottom-half"></section>
     </div>
 
-<script>
-(function() {
-  const apiBase = "https://api.counterapi.dev/v1/faye_yoko_game_stats_v2/visits";
-  const displayElement = document.getElementById('view-count');
-  const visitedKey = 'faye_yoko_visited_v2';
-  const lastCountKey = 'faye_yoko_last_count_v2';
-  const isAdmin = new URLSearchParams(location.search).get('admin') === '1';
+    <script>
+    (function() {
+        // 簡化版：保留唯一的 API 路徑與排除同一瀏覽器重複計數（localStorage）
+        const apiBase = "https://api.counterapi.dev/v1/faye_yoko_game_stats_v2/visits";
+        const display = document.getElementById('view-count');
+        const visitedKey = 'faye_yoko_visited_v2';
 
-  function showCount(value) {
-    if (!displayElement) return;
-    displayElement.innerText = (value === null || value === undefined) ? '連線中' : String(value);
-  }
-
-  async function parseCountResponse(res) {
-    try {
-      const data = await res.json();
-      // 對常見欄位做容錯
-      if (data == null) return null;
-      if (typeof data === 'number') return data;
-      if (data.count != null) return data.count;
-      if (data.value != null) return data.value;
-      // 如果回傳是一個物件且含其他數字欄位，嘗試取第一個 number 屬性
-      for (const k of Object.keys(data)) {
-        if (typeof data[k] === 'number') return data[k];
-      }
-      return null;
-    } catch (e) {
-      console.warn('parseCountResponse failed', e);
-      return null;
-    }
-  }
-
-  async function fetchCount() {
-    try {
-      const res = await fetch(apiBase, { cache: 'no-store' });
-      if (!res.ok) throw new Error('fetch failed ' + res.status);
-      return await parseCountResponse(res);
-    } catch (e) {
-      // 失敗回傳 null，不會改變顯示
-      console.warn('fetchCount error', e);
-      return null;
-    }
-  }
-
-  async function incrementCount() {
-    try {
-      const res = await fetch(apiBase + '/up');
-      if (!res.ok) throw new Error('increment failed ' + res.status);
-      return await parseCountResponse(res);
-    } catch (e) {
-      console.warn('incrementCount error', e);
-      return null;
-    }
-  }
-
-  async function resetCount() {
-    const pwd = prompt('請輸入管理密碼以重置計數：');
-    if (pwd !== 'RESET_ME') { alert('密碼錯誤或已取消'); return null; }
-    try {
-      const res = await fetch(apiBase + '/reset', { method: 'POST' });
-      if (!res.ok) throw new Error('reset failed ' + res.status);
-      return await parseCountResponse(res);
-    } catch (e) {
-      console.warn('resetCount error', e);
-      alert('重置失敗：伺服端可能不支援遠端重置或需憑證。');
-      return null;
-    }
-  }
-
-  // 週期性 poll（使用 setInterval，確保會持續執行）
-  function startPolling(intervalMs = 8000) {
-    // 立即 poll 一次（非 await 以免阻塞）
-    (async () => {
-      const v = await fetchCount();
-      if (v !== null) {
-        showCount(v);
-        localStorage.setItem(lastCountKey, String(v));
-      }
-    })();
-
-    // 串起 interval
-    return setInterval(async () => {
-      const v = await fetchCount();
-      if (v !== null) {
-        showCount(v);
-        localStorage.setItem(lastCountKey, String(v));
-      }
-    }, intervalMs);
-  }
-
-  async function init() {
-    const visited = localStorage.getItem(visitedKey) === '1';
-
-    if (!visited) {
-      // 先嘗試加一
-      const after = await incrementCount();
-      if (after !== null) {
-        localStorage.setItem(visitedKey, '1');
-        localStorage.setItem(lastCountKey, String(after));
-        showCount(after);
-      } else {
-        // 增加失敗就抓一次現有數
-        const v = await fetchCount();
-        if (v !== null) {
-          showCount(v);
-          localStorage.setItem(lastCountKey, String(v));
-        } else {
-          const cached = localStorage.getItem(lastCountKey);
-          showCount(cached ? Number(cached) : null);
+        function show(val) {
+            if (!display) return;
+            display.innerText = (val === null || val === undefined) ? '讀取中' : String(val);
         }
-      }
-    } else {
-      // 若已標記過，仍要嘗試抓一次最新值
-      const v = await fetchCount();
-      if (v !== null) {
-        showCount(v);
-        localStorage.setItem(lastCountKey, String(v));
-      } else {
-        const cached = localStorage.getItem(lastCountKey);
-        showCount(cached ? Number(cached) : null);
-      }
-    }
 
-    // 啟動長期 poll
-    const pollHandle = startPolling(8000);
+        async function safeParseCountResponse(res) {
+            try {
+                const data = await res.json();
+                if (data == null) return null;
+                if (typeof data === 'number') return data;
+                if (data.count != null) return data.count;
+                if (data.value != null) return data.value;
+                // fallback: find first numeric prop
+                for (const k of Object.keys(data)) {
+                    if (typeof data[k] === 'number') return data[k];
+                }
+                return null;
+            } catch (e) {
+                return null;
+            }
+        }
 
-    // 管理按鈕顯示與重置行為
-    if (isAdmin) {
-      const ctrl = document.getElementById('admin-controls');
-      if (ctrl) ctrl.style.display = 'block';
-      const btn = document.getElementById('reset-btn');
-      if (btn) {
-        btn.addEventListener('click', async () => {
-          const res = await resetCount();
-          if (res !== null) {
-            localStorage.setItem(lastCountKey, String(res));
-            showCount(res);
-            alert('已嘗試重置伺服器上的計數，並保留本機已計數狀態。');
-          }
-        });
-      }
-    }
-  }
+        async function fetchCurrent() {
+            try {
+                const res = await fetch(apiBase, { cache: 'no-store' });
+                if (!res.ok) throw new Error('bad response');
+                return await safeParseCountResponse(res);
+            } catch (e) {
+                return null;
+            }
+        }
 
-  // 啟動
-  init();
-})();
-</script>
+        async function incrementOnce() {
+            try {
+                const res = await fetch(apiBase + '/up');
+                if (!res.ok) throw new Error('bad increment');
+                return await safeParseCountResponse(res);
+            } catch (e) {
+                return null;
+            }
+        }
+
+        // 初始化：如果本瀏覽器尚未被計數就執行 increment，否則只讀取目前值
+        (async function init() {
+            const visited = localStorage.getItem(visitedKey) === '1';
+
+            if (!visited) {
+                const after = await incrementOnce();
+                if (after !== null) {
+                    // 成功增加
+                    localStorage.setItem(visitedKey, '1');
+                    show(after);
+                    return;
+                }
+                // 若無法 increment（網路或 CORS），再試著讀取當前值
+                const curr = await fetchCurrent();
+                if (curr !== null) {
+                    show(curr);
+                    return;
+                }
+                show(null);
+            } else {
+                // 已被計數：讀取最新值並顯示（若失敗就不覆寫現有顯示）
+                const curr = await fetchCurrent();
+                if (curr !== null) show(curr);
+            }
+        })();
+    })();
+    </script>
 
 </body>
 </html>
